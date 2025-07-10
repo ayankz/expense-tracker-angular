@@ -1,0 +1,20 @@
+.gradient-plus-btn {
+  background: linear-gradient(145deg, #f3da76, #4b4b4e);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  border-radius: 9999px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    0 2px 20px rgba(230, 186, 8, 0.6); /* лёгкое отражение основного цвета */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+

@@ -1,0 +1,28 @@
+<div class="bg-[#f0f1f3] sm:py-6 py-4 px-4 sm:px-18 hidden sm:block">
+  <ul class="">
+    <li class="flex w-full gap-4 justify-end">
+      <app-navbar-link route="/" label="Главная"></app-navbar-link>
+      <app-navbar-link route="/debts" label="Займы"></app-navbar-link>
+      <app-navbar-link route="/expenses" label="Расходы"></app-navbar-link>
+      <app-navbar-link route="/income" label="Поступления"></app-navbar-link>
+      <app-navbar-link route="/savings" label="Накопления"></app-navbar-link>
+    </li>
+  </ul>
+</div>
+<div class="sm:hidden">
+  <div
+    class="flex items-center gap-4 justify-between px-1 fixed bottom-0 left-0 w-full h-16 bg-white z-50 border-t border-[#737B8A]"
+  >
+    <app-navbar-icon iconName="home"></app-navbar-icon>
+    <app-navbar-icon iconName="debt"></app-navbar-icon>
+    <app-navbar-icon iconName="expenses"></app-navbar-icon>
+    <app-navbar-icon iconName="income"></app-navbar-icon>
+    <app-navbar-icon iconName="savings"></app-navbar-icon>
+  </div>
+  <div class="fixed bottom-14 left-1/2 -translate-x-1/2 z-50">
+    <app-main-button></app-main-button>
+  </div>
+</div>
+<app-bottom-sheet-modal>
+  <app-add-form></app-add-form>
+</app-bottom-sheet-modal>

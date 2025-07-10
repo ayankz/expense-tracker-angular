@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+@use "tailwindcss";
+body {
+  font-family: "Roboto", sans-serif;
+  background: #f0f1f3;
+}
+.active {
+  color: green;
+}
+mat-label, label {
+  color: #737b8a;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+}
+.mat-select-panel-animations-enabled {
+  background-color: rgb(249, 246, 246) !important;
+  border-radius: 24px !important;
+}
+.mat-datepicker-content {
+  background-color: rgb(239, 236, 236) !important;
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) !important;
+  width: 320px !important;
+}
+input {
+  border: 1px solid green;
+  padding: 16px 24px;
+  border: 1px solid #e6e9ee;
+  border-radius: 16px;
+  outline: none;
+  &:focus {
+    border: 3px solid #e6e9ee;
+  }
+}
+button.btn {
+  border-radius: 16px;
+  position: fixed;
+  bottom:20px;
+  right:40px;
+  padding: 14px 16px;
+  width: 120px;
+  height: 48px;
+  background-color: #CEAB0F;
+  color:white;
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  font-weight: 600;
+  &:disabled{
+    background-color: #E6E9EE;
+    color:#AFB5C0;
+  }
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

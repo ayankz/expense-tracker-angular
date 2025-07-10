@@ -1,0 +1,53 @@
+<form [formGroup]="addForm" class="flex relative flex-col gap-1 mt-4" (ngSubmit)="onSubmit()">
+  <div class="flex flex-col gap-1">
+    <div class="flex justify-between">
+      <h3 class="text-xl">Добавление операции</h3>
+      <mat-icon (click)="onClose()">close</mat-icon>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Тип операции</mat-label>
+      <mat-select formControlName="type" (selectionChange)="onTypeChange($event.value)">
+        @for (option of operationTypes; track option) {
+        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (type) {
+    <mat-form-field>
+      <mat-label>Категория</mat-label>
+      <mat-select formControlName="category">
+        @for (category of operationCategories[selectedOperationTypes!]; track
+        category) {
+        <mat-option [value]="category.value">{{ category.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    } @if (addForm.get('category')?.value) {
+    <div class="flex flex-col gap-1">
+      <mat-form-field>
+        <mat-label>Дата операции</mat-label>
+        <input matInput formControlName="date"  [matDatepicker]="picker" />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div class="flex flex-col">
+        <label>Комментарии</label>
+        <input formControlName="comment"  class="text-sm" type="text" placeholder="Введите комментарии " />
+      </div>
+       <div class="flex flex-col">
+        <label>Сумма операции</label>
+        <input formControlName="amount"  class="text-sm" type="number" placeholder="Сумма операции" />
+      </div>      
+    </div>
+    }
+    <span>{{addForm.get('date')?.value}}</span>
+  
+  </div>
+  <button class="btn" [disabled]="this.addForm.invalid" type="submit">Сохранить</button>
+</form>

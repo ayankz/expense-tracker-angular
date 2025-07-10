@@ -1,0 +1,45 @@
+<ng-container  [ngSwitch]="iconName">
+  <div class="case" *ngSwitchCase="'home'">
+    <a [routerLink]="''" routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 11.9127C3 9.99127 3 9.03056 3.40674 8.19893C3.81348 7.36729 4.57181 6.77748 6.08847 5.59785L7.08848 4.82007C9.44787 2.98499 10.6276 2.06745 12 2.06745C13.3724 2.06745 14.5521 2.98499 16.9115 4.82008L17.9115 5.59785C19.4282 6.77748 20.1865 7.36729 20.5933 8.19893C21 9.03056 21 9.99127 21 11.9127V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V11.9127Z" [attr.stroke]="router.url === '/' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-miterlimit="10"/><path d="M9 17C9 16.0681 9 15.6022 9.15224 15.2346C9.35523 14.7446 9.74458 14.3552 10.2346 14.1522C10.6022 14 11.0681 14 12 14V14C12.9319 14 13.3978 14 13.7654 14.1522C14.2554 14.3552 14.6448 14.7446 14.8478 15.2346C15 15.6022 15 16.0681 15 17V22H9V17Z"  [attr.stroke]="router.url === '/' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-miterlimit="10"/>
+      </svg>
+    </a>
+    <span>Главная</span>
+  </div>
+  <div class="case" *ngSwitchCase="'debt'">
+    <a [routerLink]="'/debts'" routerLinkActive="active" >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 6H10.0556C9.28024 6 8.89259 6 8.57715 6.09395C7.86692 6.30548 7.31113 6.85116 7.09569 7.54847C7 7.85818 7 8.23878 7 9C7 9.76122 7 10.1418 7.09569 10.4515C7.31113 11.1488 7.86692 11.6945 8.57715 11.9061C8.89259 12 9.28024 12 10.0556 12H13.9444C14.7198 12 15.1074 12 15.4229 12.0939C16.1331 12.3055 16.6889 12.8512 16.9043 13.5485C17 13.8582 17 14.2388 17 15C17 15.7612 17 16.1418 16.9043 16.4515C16.6889 17.1488 16.1331 17.6945 15.4229 17.9061C15.1074 18 14.7197 18 13.9444 18H7M12 18V21M12 3V6" [attr.stroke]="router.url === '/debts' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <span>Займы</span>
+  </div>
+  <div class="case" *ngSwitchCase="'income'">
+    <a  [routerLink]="'/income'" routerLinkActive="active" >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 12.8947L7.14177 12.9809C8.08209 13.5525 9.30521 13.2895 9.92735 12.3818L10.1971 11.9883C10.6917 11.2666 11.676 11.0794 12.401 11.5691C13.1667 12.0863 14.2104 11.845 14.6715 11.0443L17 7M8 21H16.5M10.5 18H13.5C16.7875 18 18.4312 18 19.5376 17.092C19.7401 16.9258 19.9258 16.7401 20.092 16.5376C21 15.4312 21 13.7875 21 10.5C21 7.21252 21 5.56878 20.092 4.46243C19.9258 4.25989 19.7401 4.07418 19.5376 3.90796C18.4312 3 16.7875 3 13.5 3H10.5C7.21252 3 5.56878 3 4.46243 3.90796C4.25989 4.07418 4.07418 4.25989 3.90796 4.46243C3 5.56878 3 7.21252 3 10.5C3 13.7875 3 15.4312 3.90796 16.5376C4.07418 16.7401 4.25989 16.9258 4.46243 17.092C5.56878 18 7.21252 18 10.5 18Z" [attr.stroke]="router.url === '/income' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <span>Платежи</span>
+  </div>
+  <div class="case" *ngSwitchCase="'savings'">
+    <a  [routerLink]="'/savings'" routerLinkActive="active" >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.6667 9.35294H7.33333M16.6667 9.35294C17.9553 9.35294 19 10.301 19 11.4706V14.6471C19 18.1557 15.866 21 12 21C8.13401 21 5 18.1557 5 14.6471V11.4706C5 10.301 6.04467 9.35294 7.33333 9.35294M16.6667 9.35294V7.2353C16.6667 4.89621 14.5773 3 12 3C9.42267 3 7.33333 4.89621 7.33333 7.23529L7.33333 9.35294" [attr.stroke]="router.url === '/savings' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="11" y="14" width="2" height="4" rx="1" [attr.stroke]="router.url === '/savings' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <span>Накопления</span>
+  </div>
+  <div class="case" *ngSwitchCase="'expenses'">
+    <a  [routerLink]="'/expenses'" routerLinkActive="active">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 6.03704H19.1224C20.5165 6.03704 21.4829 7.42752 20.9969 8.73419L19.5964 12.5M7 6.03704L10.13 13.7519C10.4361 14.5064 11.169 15 11.9833 15H17.2766C18.1123 15 18.8599 14.4804 19.1512 13.6972L19.5964 12.5M7 6.03704L6.61972 5.18492C6.29806 4.46417 5.58261 4 4.79334 4H2M19.5964 12.5H13.5" [attr.stroke]="router.url === '/expenses' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="19" r="1.25" [attr.stroke]="router.url === '/expenses' ? '#CEAB0F' : '#1F2023'" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="17" cy="19" r="1.25" [attr.stroke]="router.url === '/expenses' ? '#CEAB0F' : '#1F2023'" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <span>Операции</span>
+  </div>
+</ng-container>
