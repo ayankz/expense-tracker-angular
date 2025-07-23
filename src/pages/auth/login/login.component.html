@@ -1,0 +1,50 @@
+<div class="w-full">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="mx-auto w-[350px] p-4 flex flex-col items-center"
+  >
+    <div class="items-center text-lg mb-9">Вход в личный кабинет</div>
+    <div class="w-full flex flex-col gap-1 mb-5 ">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="info@mail.com" />
+      @if (form.get('email')?.errors && form.get('email')?.touched) {
+      <span class="text-red-600 text-[12px] ml-2"
+        >Введите правильный email</span
+      >
+      }
+    </div>
+    <div class="w-full flex flex-col gap-1 mb-5 relative">
+      <label>Password</label>
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Aa12345!"
+      />
+      <mat-icon
+        class="absolute top-10 right-5"
+        (click)="showPassword = !showPassword"
+        >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
+      >
+      @if (form.get('password')?.errors && form.get('password')?.touched) {
+      <span class="text-red-600 text-[12px] ml-2">
+        Пароль должен содержать заглавную букву, цифру и спецсимвол</span
+      >
+      }
+      @if (errorMessage()) {
+      <div class="text-red-600 text-[12px] ml-2">{{ errorMessage() }}</div>
+      }
+    </div>
+    <div class="w-full flex flex-col gap-4 border-b border-[#ceab0f] pb-4">
+      <app-button title="Войти"></app-button>
+      <app-button
+        buttonType="button"
+        type="secondary"
+        [isDisabled]="false"
+        title="Регистрация"
+        (click)='onRegisterHandle()'
+      ></app-button>
+    </div>
+    <div class="text-[#CEAB0F] pt-4 cursor-pointer">Забыли пароль?</div>
+  </form>
+</div>

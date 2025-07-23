@@ -3,8 +3,13 @@
     <app-logo></app-logo>
     <app-avatar-menu></app-avatar-menu>
   </app-header>
+  @if (authService.isAuthenticated()) {
   <app-navbar></app-navbar>
-  <div class="h-full ">
+  }
+
+  <app-loading></app-loading>
+
+  <div class="h-full">
     <app-main-title></app-main-title>
     <router-outlet />
   </div>

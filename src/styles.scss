@@ -3,15 +3,30 @@ body {
   font-family: "Roboto", sans-serif;
   background: #f0f1f3;
 }
+form {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  input::placeholder {
+    color: #c2c1c1;
+  }
+}
 .active {
   color: green;
 }
-mat-label, label {
+mat-label,
+label {
   color: #737b8a;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 140%;
 }
+label {
+  position: relative;
+  left: 20px;
+}
+
 .mat-select-panel-animations-enabled {
   background-color: rgb(249, 246, 246) !important;
   border-radius: 24px !important;
@@ -29,23 +44,6 @@ input {
   outline: none;
   &:focus {
     border: 3px solid #e6e9ee;
-  }
-}
-button.btn {
-  border-radius: 16px;
-  position: fixed;
-  bottom:20px;
-  right:40px;
-  padding: 14px 16px;
-  width: 120px;
-  height: 48px;
-  background-color: #CEAB0F;
-  color:white;
-  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
-  font-weight: 600;
-  &:disabled{
-    background-color: #E6E9EE;
-    color:#AFB5C0;
   }
 }
 html,

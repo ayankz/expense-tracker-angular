@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { GlobalModalService } from '../../../core/services/global-modal.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ButtonComponent } from "../button/button.component";
 
 enum OperationType {
   EXPENSE = 'expense',
@@ -30,7 +31,8 @@ enum OperationType {
     ReactiveFormsModule,
     FormsModule,
     MatIconModule,
-  ],
+    ButtonComponent
+],
   templateUrl: './add-form.component.html',
   styleUrl: './add-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

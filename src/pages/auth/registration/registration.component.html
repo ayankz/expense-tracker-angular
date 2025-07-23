@@ -1,0 +1,68 @@
+<div>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="mx-auto w-[350px] p-4 flex flex-col items-center"
+  >
+    <div class="items-center text-lg mb-9">Вход в личный кабинет</div>
+    <div class="w-full flex flex-col gap-1 mb-5">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="info@mail.com" />
+      @if (form.get('email')?.errors && form.get('email')?.touched) {
+      <span class="text-red-600 text-[12px] ml-2"
+        >Введите правильный email</span
+      >
+      }
+    </div>
+    <div class="w-full flex flex-col gap-1 mb-5 relative">
+      <label>Password</label>
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Aa12345!"
+      />
+      <mat-icon
+        class="absolute top-10 right-5"
+        (click)="showPassword = !showPassword"
+        >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
+      >
+      @if (form.get('password')?.errors && form.get('password')?.touched) {
+      <span class="text-red-600 text-[12px] ml-2">
+        Пароль должен содержать заглавную букву, цифру и спецсимвол</span
+      >
+      }
+    </div>
+    <div class="w-full flex flex-col gap-1 mb-5 relative">
+      <label>Confirm Password</label>
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        formControlName="confirmPassword"
+        placeholder="Aa12345!"
+      />
+      <mat-icon
+        class="absolute top-10 right-5"
+        (click)="showConfirmPassword = !showConfirmPassword"
+        >{{ showConfirmPassword ? "visibility" : "visibility_off" }}</mat-icon
+      >
+      @if (form.get('confirmPassword')?.errors &&
+      form.get('confirmPassword')?.touched) {
+      <span class="text-red-600 text-[12px] ml-2">
+        Пароль должен содержать заглавную букву, цифру и спецсимвол</span
+      >
+      } @if (isMismatch()) {
+      <span class="text-red-600 text-[12px] ml-2"> Пароли не совпадают</span>
+      } @if (errorMessage()) {
+      <div class="text-red-600 text-[12px] ml-2">{{ errorMessage() }}</div>
+      }
+    </div>
+    <div class="w-full flex flex-col gap-4 border-b border-[#ceab0f] pb-4">
+      <app-button [isDisabled]="false" title="Сохранить"></app-button>
+    </div>
+    <div class="flex gap-2 items-center">
+      <div class="text-[#737B8A] text-[14px] pt-4">Уже есть аккаунт?</div>
+      <a class="text-[#CEAB0F] pt-4 cursor-pointer" routerLink="/login"
+        >Войти</a
+      >
+    </div>
+  </form>
+</div>
