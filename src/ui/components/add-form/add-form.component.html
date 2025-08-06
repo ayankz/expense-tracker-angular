@@ -1,35 +1,52 @@
-<form [formGroup]="addForm" class="flex relative flex-col gap-1 mt-4" (ngSubmit)="onSubmit()">
-  <div class="flex flex-col gap-1">
-    <div class="flex justify-between">
+<form
+  [formGroup]="addForm"
+  class="flex relative flex-col gap-1 mt-4"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="flex flex-col gap-4">
+    <div class="flex justify-between mb-4">
       <h3 class="text-xl">Добавление операции</h3>
       <mat-icon (click)="onClose()">close</mat-icon>
     </div>
-
-    <mat-form-field>
-      <mat-label>Тип операции</mat-label>
-      <mat-select formControlName="type" (selectionChange)="onTypeChange($event.value)">
+    <section class="border-b-1 border-b-gray-300 pb-4">
+      <div class="flex gap-2 align-center justify-around flex-row">
         @for (option of operationTypes; track option) {
-        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        <app-selector
+          class="basis-1/2"
+          [label]="option.label"
+          (click)="loadCategories(option.value)"
+          [isActive]="selectedOperationTypes === option.value"
+        ></app-selector>
         }
-      </mat-select>
-    </mat-form-field>
-
+      </div>
+    </section>
     @if (type) {
-    <mat-form-field>
-      <mat-label>Категория</mat-label>
-      <mat-select formControlName="category">
-        @for (category of operationCategories[selectedOperationTypes!]; track
-        category) {
-        <mat-option [value]="category.value">{{ category.label }}</mat-option>
+    <section class="border-b-1 border-b-gray-300 pb-4 flex flex-col gap-4">
+      <span
+        class="text-sm text-[#CEAB0F] text-right font-bold"
+        (click)="isCreateModalOpen.set(true)"
+        >Добавить</span
+      >
+          @if(isCreateModalOpen()) {
+      <input  placeholder="Введите на" />
+      }
+      <div class="flex gap-2 align-center start flex-row">
+        @for (category of categories(); track category.id) {
+        <app-selector
+          class="basis-1/2"
+          [label]="category.name"
+          (click)="category.name = category.name"
+          [isActive]="selectedCategory === category.name"
+        ></app-selector>
         }
-      </mat-select>
-    </mat-form-field>
-
+      </div>
+  
+    </section>
     } @if (addForm.get('category')?.value) {
     <div class="flex flex-col gap-1">
       <mat-form-field>
         <mat-label>Дата операции</mat-label>
-        <input matInput formControlName="date"  [matDatepicker]="picker" />
+        <input matInput formControlName="date" [matDatepicker]="picker" />
         <mat-datepicker-toggle
           matIconSuffix
           [for]="picker"
@@ -38,14 +55,24 @@
       </mat-form-field>
       <div class="flex flex-col">
         <label>Комментарии</label>
-        <input formControlName="comment"  class="text-sm" type="text" placeholder="Введите комментарии " />
+        <input
+          formControlName="comment"
+          class="text-sm"
+          type="text"
+          placeholder="Введите комментарии "
+        />
       </div>
-       <div class="flex flex-col">
+      <div class="flex flex-col">
         <label>Сумма операции</label>
-        <input formControlName="amount"  class="text-sm" type="number" placeholder="Сумма операции" />
-      </div>      
+        <input
+          formControlName="amount"
+          class="text-sm"
+          type="number"
+          placeholder="Сумма операции"
+        />
+      </div>
     </div>
     }
   </div>
-  <app-button></app-button>
+  <app-button title="Добавить"></app-button>
 </form>

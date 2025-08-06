@@ -21,12 +21,16 @@ export abstract class BaseHttpService {
       retryCount?: number;
     }
   ): Observable<T> {
-    const headers = options?.headers || new HttpHeaders();
-    const token = options?.token || localStorage.getItem('accessToken');
+    let authHeaders =
+      options?.headers instanceof HttpHeaders
+        ? options.headers
+        : new HttpHeaders(options?.headers);
 
-    const authHeaders = token
-      ? headers.set('Authorization', `Bearer ${token}`)
-      : headers;
+    const token = options?.token || localStorage.getItem('access_token');
+
+    if (token && !authHeaders.has('Authorization')) {
+      authHeaders = authHeaders.set('Authorization', `Bearer ${token}`);
+    }
 
     const requestOptions = {
       body: options?.body,
@@ -47,19 +51,34 @@ export abstract class BaseHttpService {
     params?: HttpParams,
     retryCount = 0
   ): Observable<T> {
-    return this.request<T>('GET', `${this.baseUrl}${url}`, { params, retryCount });
+    return this.request<T>('GET', `${this.baseUrl}${url}`, {
+      params,
+      retryCount,
+    });
   }
 
   protected post<T>(
     url: string,
     body?: unknown,
-    retryCount = 0
+    retryCount = 0,
+    options?: {
+      headers?: HttpHeaders;
+      token?: string;
+      params?: HttpParams;
+    }
   ): Observable<T> {
-    return this.request<T>('POST', `${this.baseUrl}${url}`, { body, retryCount });
-  }
+  return this.request<T>('POST', `${this.baseUrl}${url}`, {
+    body,
+    retryCount,
+    ...options,
+  });
+}
 
   protected put<T>(url: string, body?: unknown, retryCount = 0): Observable<T> {
-    return this.request<T>('PUT', `${this.baseUrl}${url}`, { body, retryCount });
+    return this.request<T>('PUT', `${this.baseUrl}${url}`, {
+      body,
+      retryCount,
+    });
   }
 
   protected delete<T>(url: string, retryCount = 0): Observable<T> {

@@ -10,6 +10,12 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private loadingService: LoadingService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const excludedUrls = ['/auth/refresh'];
+    const shouldSkip = excludedUrls.some(url => req.url.includes(url));
+    if (shouldSkip) {
+      return next.handle(req);
+    }
+
     this.requests++;
     this.loadingService.show();
 

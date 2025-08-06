@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -14,12 +14,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { GlobalModalService } from '../../../core/services/global-modal.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ButtonComponent } from "../button/button.component";
+import { ButtonComponent } from '../button/button.component';
+import { SelectorComponent } from '../selector/selector.component';
+import { OperationType } from '../../../core/enums';
+import { CategoryService } from '../../../core/services/category.service';
+import { CommonModule } from '@angular/common';
 
-enum OperationType {
-  EXPENSE = 'expense',
-  INCOME = 'income',
-}
 @Component({
   selector: 'app-add-form',
   imports: [
@@ -31,18 +31,26 @@ enum OperationType {
     ReactiveFormsModule,
     FormsModule,
     MatIconModule,
-    ButtonComponent
-],
+    CommonModule,
+    ButtonComponent,
+    SelectorComponent,
+  ],
   templateUrl: './add-form.component.html',
   styleUrl: './add-form.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddFormComponent {
-  addForm: FormGroup;
-  constructor(
-    private modalService: GlobalModalService,
-    private fb: FormBuilder
-  ) {
+  private categoryService = inject(CategoryService);
+  private modalService = inject(GlobalModalService);
+  private fb = inject(FormBuilder);
+
+  public addForm: FormGroup;
+  public categories = this.categoryService.categories;
+  public categoryError = this.categoryService.categoryError;
+  public isCreateModalOpen = signal<boolean>(false);
+
+
+  constructor() {
     this.addForm = this.fb.group({
       type: new FormControl('', Validators.required),
       category: new FormControl('', Validators.required),
@@ -50,6 +58,7 @@ export class AddFormComponent {
       comment: new FormControl(''),
       amount: new FormControl('', Validators.required),
     });
+    
   }
 
   selectedOperationTypes: OperationType | null = null;
@@ -58,22 +67,6 @@ export class AddFormComponent {
     { label: 'Расход', value: OperationType.EXPENSE },
     { label: 'Поступление', value: OperationType.INCOME },
   ];
-  operationCategories: Record<
-    OperationType,
-    { label: string; value: string }[]
-  > = {
-    [OperationType.EXPENSE]: [
-      { label: 'Продукты', value: 'food' },
-      { label: 'Бензин', value: 'gasoline' },
-      { label: 'Коммуслуги', value: 'utils' },
-      { label: 'В долг', value: 'debt-in' },
-      { label: 'Развлечения', value: 'vibe' },
-    ],
-    [OperationType.INCOME]: [
-      { label: 'Зарплата', value: 'salary' },
-      { label: 'Возврат долга', value: 'debt-out' },
-    ],
-  };
   onClose() {
     this.resetForm();
     this.modalService.close();
@@ -81,14 +74,24 @@ export class AddFormComponent {
   resetForm() {
     this.addForm.reset();
   }
-  onTypeChange(value: OperationType) {
+  loadCategories(value: OperationType) {
     this.selectedOperationTypes = value;
-    this.addForm.patchValue({ category: '' });
+    this.addForm.patchValue({ type: value });
+    this.categoryService.loadCategories(value);
   }
   get type(): string | null {
-  return this.addForm.get('type')?.value || null;
-}
+    return this.addForm.get('type')?.value || null;
+  }
+  set type(value: string | null) {
+    if (value) {
+      this.selectedOperationTypes = value as OperationType;
+      this.addForm.patchValue({ type: value });
+    } else {
+      this.selectedOperationTypes = null;
+      this.addForm.patchValue({ type: '' });
+    }
+  }
   onSubmit() {
-    console.log(231);
+    console.log(this.addForm.value);
   }
 }

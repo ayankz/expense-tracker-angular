@@ -1,7 +1,7 @@
 import { computed, effect, Injectable, signal } from '@angular/core';
 import { BaseHttpService } from '../../../core/services/base-http.service';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface RegisterDto {
   email: string;
@@ -12,8 +12,12 @@ interface RegisterDto {
   providedIn: 'root',
 })
 export class AuthService extends BaseHttpService {
-  private access_token = signal<string | null>(localStorage.getItem('access_token'));
-  private refresh_token = signal<string | null>(localStorage.getItem('refresh_token'));
+  private access_token = signal<string | null>(
+    localStorage.getItem('access_token')
+  );
+  private refresh_token = signal<string | null>(
+    localStorage.getItem('refresh_token')
+  );
 
   readonly isAuthenticated = computed(() => !!this.access_token());
 
@@ -29,7 +33,7 @@ export class AuthService extends BaseHttpService {
       }
     });
 
-       effect(() => {
+    effect(() => {
       const token = this.refresh_token();
       if (token) {
         localStorage.setItem('refresh_token', token);
@@ -38,7 +42,7 @@ export class AuthService extends BaseHttpService {
       }
     });
   }
-getTokens() {
+  getTokens() {
     return {
       access_token: this.access_token(),
       refresh_token: this.refresh_token(),
@@ -49,7 +53,7 @@ getTokens() {
     this.access_token.set(tokens.access);
     this.refresh_token.set(tokens.refresh);
   }
-  
+
   register(data: RegisterDto): Observable<any> {
     return this.post('/auth/local/signup', data);
   }
@@ -58,7 +62,17 @@ getTokens() {
     return this.post('/auth/local/signin', data);
   }
   logout(): Observable<any> {
-     this.setTokens({ access: null, refresh: null });
+    this.setTokens({ access: null, refresh: null });
     return this.post('/auth/logout');
+  }
+  refreshToken(): Observable<any> {
+    const { refresh_token: refresh } = this.getTokens();
+    if (!refresh) {
+      throw new Error('Refresh token is missing');
+    }
+
+    return this.post('/auth/refresh', null, 0, {
+      token: refresh,
+    });
   }
 }
