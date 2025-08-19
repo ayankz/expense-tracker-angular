@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { passwordValidator } from './password.validator';
+import { passwordValidator } from '../../../core/validators/password.validator';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';

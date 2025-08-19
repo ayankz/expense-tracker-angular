@@ -1,14 +1,85 @@
-<form
-  [formGroup]="addForm"
-  class="flex relative flex-col gap-1 mt-4"
-  (ngSubmit)="onSubmit()"
->
-  <div class="flex flex-col gap-4">
-    <div class="flex justify-between mb-4">
-      <h3 class="text-xl">Добавление операции</h3>
-      <mat-icon (click)="onClose()">close</mat-icon>
+<div class="flex flex-col gap-4">
+  <div class="flex justify-between mb-4">
+    <h3 class="text-xl">Добавление операции</h3>
+    <mat-icon (click)="onClose()">close</mat-icon>
+  </div>
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="start"
+    (selectedIndexChange)="resetActiveCategory()"
+  >
+    <mat-tab label="Расход">
+      <div class="mt-4 py-4 flex gap-4 align-center">
+        @for (category of expenseCategories; track category.id) {
+        <app-selector
+          [label]="category.name"
+          (click)="setCategory(category.name)"
+          [isActive]="activeCategory === category.name"
+        ></app-selector>
+        }
+        <app-selector></app-selector>
+      </div>
+    </mat-tab>
+    <mat-tab label="Поступление">
+      <div class="mt-4 py-4 flex gap-4 align-center">
+        @for (category of incomeCategories; track category.id) {
+        <app-selector
+          [label]="category.name"
+          (click)="setCategory(category.name)"
+          [isActive]="activeCategory === category.name"
+        ></app-selector>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  @if (activeCategory) {
+  <form
+    [formGroup]="addForm"
+    class="flex flex-col gap-2"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="flex flex-col gap-1 items-start">
+      <label>Сумма</label>
+      <input
+        type="number"
+        formControlName="amount"
+        placeholder="Введите сумму"
+         (input)="onAmountInput($event)"
+      />
     </div>
-    <section class="border-b-1 border-b-gray-300 pb-4">
+    <div class="flex flex-col gap-1 items-start">
+      <label>Комментарии</label>
+      <input
+        type="text"
+        formControlName="comment"
+        placeholder="Введите комментарии"
+      />
+    </div>
+    <div class="flex flex-col gap-1 items-start">
+      <label>Дата</label>
+      <input
+        type="text"
+        formControlName="date"
+        placeholder="дд.мм.гггг"
+        mask="00.00.0000"
+      />
+      <div *ngIf="addForm.get('date')?.errors?.['invalidDate'] as err">
+        <span *ngIf="err === 'format'"
+          >Неверный формат. Используйте ДД.ММ.ГГГГ</span
+        >
+        <span *ngIf="err === 'notExist'">Такой даты не существует</span>
+        <span *ngIf="err === 'future'"
+          >Дата не может быть больше сегодняшней</span
+        >
+      </div>
+    </div>
+    <div class="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-[200px]">
+      <app-button [isDisabled]="addForm.invalid" title="Сохранить"></app-button>
+    </div>
+  </form>
+  }
+  <!-- [isDisabled]="addForm.invalid" -->
+  <!-- <section class="border-b-1 border-b-gray-300 pb-4">
       <div class="flex gap-2 align-center justify-around flex-row">
         @for (option of operationTypes; track option) {
         <app-selector
@@ -19,16 +90,16 @@
         ></app-selector>
         }
       </div>
-    </section>
-    @if (type) {
+    </section> -->
+  <!-- @if (type) {
     <section class="border-b-1 border-b-gray-300 pb-4 flex flex-col gap-4">
       <span
         class="text-sm text-[#CEAB0F] text-right font-bold"
         (click)="isCreateModalOpen.set(true)"
         >Добавить</span
       >
-          @if(isCreateModalOpen()) {
-      <input  placeholder="Введите на" />
+      @if(isCreateModalOpen()) {
+      <input placeholder="Введите новую категорию" />
       }
       <div class="flex gap-2 align-center start flex-row">
         @for (category of categories(); track category.id) {
@@ -36,11 +107,9 @@
           class="basis-1/2"
           [label]="category.name"
           (click)="category.name = category.name"
-          [isActive]="selectedCategory === category.name"
         ></app-selector>
         }
       </div>
-  
     </section>
     } @if (addForm.get('category')?.value) {
     <div class="flex flex-col gap-1">
@@ -72,7 +141,7 @@
         />
       </div>
     </div>
-    }
-  </div>
-  <app-button title="Добавить"></app-button>
-</form>
+    } -->
+</div>
+<ng-template> </ng-template>
+<!-- [isDisabled]="addForm.invalid" -->

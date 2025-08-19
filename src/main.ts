@@ -4,10 +4,12 @@ import { AppComponent } from './app/app.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './core/interceptor/loading-interceptor.interceptor';
 import { RefreshTokenInterceptor } from './core/interceptor/refresh.interceptor';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
   bootstrapApplication(AppComponent, {
   providers: [
     ...appConfig.providers,
+    provideEnvironmentNgxMask(),
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
   ],

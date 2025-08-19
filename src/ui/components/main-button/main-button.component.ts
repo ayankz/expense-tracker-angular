@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { GlobalModalService } from '../../../core/services/global-modal.service';
+import { CategoryService } from '../../../core/services/category.service';
 
 @Component({
   selector: 'app-main-button',
@@ -9,7 +10,7 @@ import { GlobalModalService } from '../../../core/services/global-modal.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainButtonComponent {
-  constructor(private modalService: GlobalModalService){}
+  private modalService = inject(GlobalModalService);
   count = signal(0);
 
   openModalHandle() {

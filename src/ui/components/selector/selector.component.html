@@ -1,6 +1,8 @@
 <div
-  class="border-2 border-[#CEAB0F] rounded-[16px] p-2 text-center"
-  [ngClass]="{ 'bg-[#CEAB0F] text-white font-bold': isActive }"
+  class="flex flex-col gap-2 items-center justify-center cursor-pointer border border-[#CEAB0F] p-4 rounded-lg"
+  [ngClass]="{ 'bg-[#CEAB0F]': isActive }"
 >
-  {{ label }}
+  <span class="text-sm text-[#1A1B1F]" [ngClass]="{ 'text-white': isActive }"
+    >{{ label ? label : "+" }}
+  </span>
 </div>

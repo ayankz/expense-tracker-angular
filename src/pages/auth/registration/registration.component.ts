@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { passwordValidator } from '../login/password.validator';
+import { passwordValidator } from '../../../core/validators/password.validator';
 import { matchPasswords } from './matchPasswords.validator';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
