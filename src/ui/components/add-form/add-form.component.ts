@@ -27,6 +27,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { ButtonComponent } from '../button/button.component';
 import { dateValidator } from '../../../core/validators/date.validator';
 import { Category } from '../../../core/interfaces';
+import { TransactionService } from '../../../core/services/transaction.service';
 
 @Component({
   selector: 'app-add-form',
@@ -54,6 +55,7 @@ import { Category } from '../../../core/interfaces';
 export class AddFormComponent {
   private categoryService = inject(CategoryService);
   private modalService = inject(GlobalModalService);
+  private transactionService = inject(TransactionService);
   private fb = inject(FormBuilder);
 
   public addForm: FormGroup;
@@ -64,7 +66,6 @@ export class AddFormComponent {
   constructor() {
     this.addForm = this.fb.group({
       type: [OperationType.EXPENSE],
-      category: ['', Validators.required],
       categoryId: [''],
       date: ['', [Validators.required, dateValidator()]],
       comment: [''],
@@ -87,13 +88,13 @@ export class AddFormComponent {
 
   onAmountInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    const digits = input.value.replace(/\s/g, ''); // убираем пробелы
-    this.addForm.get('amount')?.setValue(digits, { emitEvent: false });
+    const digits = input.value.replace(/\s/g, '');
+    const value = digits ? Number(digits) : null;
+    this.addForm.get('amount')?.setValue(value, { emitEvent: false });
   }
-  
+
   setCategory(category: Category) {
     this.activeCategory = category.name;
-    this.addForm.patchValue({ category: category.name });
     this.addForm.patchValue({ categoryId: category.id });
   }
 
@@ -144,6 +145,16 @@ export class AddFormComponent {
   }
 
   onSubmit() {
-    console.log(this.addForm.value);
+    const { date, ...formValue } = this.addForm.value;
+
+    if (date) {
+      const day = Number(date.slice(0, 2));
+      const month = Number(date.slice(2, 4));
+      const year = Number(date.slice(4, 8));
+      formValue.createdAt = new Date(Date.UTC(year, month - 1, day));
+    }
+    
+    this.transactionService.createTransaction(formValue);
+    this.onClose();
   }
 }
