@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { TransactionService } from '../../core/services/transaction.service';
 
 @Component({
   selector: 'app-expenses',
@@ -7,6 +8,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './expenses.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExpensesComponent {
+export class ExpensesComponent implements OnInit {
+  private categoryService = inject(TransactionService);
 
+  public transactions = this.categoryService.transactions;
+  public transactionError = this.categoryService.transactionError;
+
+  ngOnInit() {
+    this.categoryService.loadTransactions();
+    console.log(this.transactions());
+  }
 }

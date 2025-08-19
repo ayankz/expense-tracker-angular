@@ -6,7 +6,11 @@ export enum OperationType {
 export interface Transaction {
   amount: number;
   categoryId: number;
-  date: Date;
+  createdAt: Date;
   type: OperationType;
   comment?: string;
+}
+export interface GroupedTransactions {
+  date: string;
+  transactions: Transaction[];
 }
