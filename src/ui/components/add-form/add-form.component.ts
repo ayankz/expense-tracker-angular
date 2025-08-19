@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -27,12 +26,8 @@ import { SelectorComponent } from '../selector/selector.component';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { ButtonComponent } from '../button/button.component';
 import { dateValidator } from '../../../core/validators/date.validator';
-const date = new Date();
-enum EDGES {
-  MAX_YEARS = date.getFullYear(),
-  MAXX_MONTH = date.getMonth() + 1,
-  MAXX_DAY = date.getDate(),
-}
+import { Category } from '../../../core/interfaces';
+
 @Component({
   selector: 'app-add-form',
   imports: [
@@ -68,7 +63,9 @@ export class AddFormComponent {
 
   constructor() {
     this.addForm = this.fb.group({
+      type: [OperationType.EXPENSE],
       category: ['', Validators.required],
+      categoryId: [''],
       date: ['', [Validators.required, dateValidator()]],
       comment: [''],
       amount: ['', Validators.required],
@@ -89,17 +86,20 @@ export class AddFormComponent {
   }
 
   onAmountInput(event: Event) {
-  const input = event.target as HTMLInputElement;
-  input.value = input.value.replace(/^0+/, ''); // убираем ведущие нули
-  this.addForm.get('amount')?.setValue(input.value);
-}
-  setCategory(category: string) {
-    this.activeCategory = category;
-    this.addForm.patchValue({ category });
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\s/g, ''); // убираем пробелы
+    this.addForm.get('amount')?.setValue(digits, { emitEvent: false });
+  }
+  
+  setCategory(category: Category) {
+    this.activeCategory = category.name;
+    this.addForm.patchValue({ category: category.name });
+    this.addForm.patchValue({ categoryId: category.id });
   }
 
   resetForm() {
     this.addForm.reset();
+    this.activeCategory = null;
   }
 
   set ActiveCategory(category: string) {
@@ -119,9 +119,10 @@ export class AddFormComponent {
     );
   }
 
-  resetActiveCategory() {
-    this.activeCategory = null;
-    this.addForm.reset();
+  resetActiveCategory(index: number) {
+    this.resetForm();
+    this.type = this.operationTypes[index].value;
+    this.addForm.patchValue({ type: this.type });
   }
 
   loadCategories() {

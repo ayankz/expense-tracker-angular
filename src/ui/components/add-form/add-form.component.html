@@ -1,19 +1,19 @@
-<div class="flex flex-col gap-4">
-  <div class="flex justify-between mb-4">
+<div class="flex flex-col gap-2 mt-4">
+  <div class="flex justify-between mb-2">
     <h3 class="text-xl">Добавление операции</h3>
     <mat-icon (click)="onClose()">close</mat-icon>
   </div>
   <mat-tab-group
     mat-stretch-tabs="false"
     mat-align-tabs="start"
-    (selectedIndexChange)="resetActiveCategory()"
+    (selectedIndexChange)="resetActiveCategory($event)"
   >
     <mat-tab label="Расход">
-      <div class="mt-4 py-4 flex gap-4 align-center">
+      <div class="mt-2 py-4 flex gap-4 align-center">
         @for (category of expenseCategories; track category.id) {
         <app-selector
           [label]="category.name"
-          (click)="setCategory(category.name)"
+          (click)="setCategory(category)"
           [isActive]="activeCategory === category.name"
         ></app-selector>
         }
@@ -25,7 +25,7 @@
         @for (category of incomeCategories; track category.id) {
         <app-selector
           [label]="category.name"
-          (click)="setCategory(category.name)"
+          (click)="setCategory(category)"
           [isActive]="activeCategory === category.name"
         ></app-selector>
         }
@@ -41,10 +41,12 @@
     <div class="flex flex-col gap-1 items-start">
       <label>Сумма</label>
       <input
-        type="number"
+        type="text"
         formControlName="amount"
         placeholder="Введите сумму"
-         (input)="onAmountInput($event)"
+        mask="separator.0"
+        [thousandSeparator]="' '"
+        (input)="onAmountInput($event)"
       />
     </div>
     <div class="flex flex-col gap-1 items-start">
@@ -63,85 +65,38 @@
         placeholder="дд.мм.гггг"
         mask="00.00.0000"
       />
-      <div *ngIf="addForm.get('date')?.errors?.['invalidDate'] as err">
-        <span *ngIf="err === 'format'"
-          >Неверный формат. Используйте ДД.ММ.ГГГГ</span
-        >
-        <span *ngIf="err === 'notExist'">Такой даты не существует</span>
-        <span *ngIf="err === 'future'"
-          >Дата не может быть больше сегодняшней</span
-        >
-      </div>
+      <ng-container *ngIf="addForm.get('date')?.errors as errors">
+        <ng-container *ngIf="errors['invalidDate'] as err">
+          <span class="text-red-500 text-sm">
+            <ng-container [ngSwitch]="err">
+              <ng-template [ngSwitchCase]="'format'">
+                Неверный формат (dd.mm.yyyy)
+              </ng-template>
+              <ng-template [ngSwitchCase]="'notExist'">
+                Такой даты не существует
+              </ng-template>
+              <ng-template [ngSwitchCase]="'future'">
+                Дата не может быть больше сегодняшней
+              </ng-template>
+            </ng-container>
+          </span>
+        </ng-container>
+      </ng-container>
     </div>
-    <div class="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-[200px]">
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[200px]">
       <app-button [isDisabled]="addForm.invalid" title="Сохранить"></app-button>
     </div>
   </form>
   }
-  <!-- [isDisabled]="addForm.invalid" -->
-  <!-- <section class="border-b-1 border-b-gray-300 pb-4">
-      <div class="flex gap-2 align-center justify-around flex-row">
-        @for (option of operationTypes; track option) {
-        <app-selector
-          class="basis-1/2"
-          [label]="option.label"
-          (click)="loadCategories(option.value)"
-          [isActive]="selectedOperationTypes === option.value"
-        ></app-selector>
-        }
-      </div>
-    </section> -->
-  <!-- @if (type) {
-    <section class="border-b-1 border-b-gray-300 pb-4 flex flex-col gap-4">
-      <span
-        class="text-sm text-[#CEAB0F] text-right font-bold"
-        (click)="isCreateModalOpen.set(true)"
-        >Добавить</span
-      >
-      @if(isCreateModalOpen()) {
-      <input placeholder="Введите новую категорию" />
-      }
-      <div class="flex gap-2 align-center start flex-row">
-        @for (category of categories(); track category.id) {
-        <app-selector
-          class="basis-1/2"
-          [label]="category.name"
-          (click)="category.name = category.name"
-        ></app-selector>
-        }
-      </div>
-    </section>
-    } @if (addForm.get('category')?.value) {
-    <div class="flex flex-col gap-1">
-      <mat-form-field>
-        <mat-label>Дата операции</mat-label>
-        <input matInput formControlName="date" [matDatepicker]="picker" />
-        <mat-datepicker-toggle
-          matIconSuffix
-          [for]="picker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <div class="flex flex-col">
-        <label>Комментарии</label>
-        <input
-          formControlName="comment"
-          class="text-sm"
-          type="text"
-          placeholder="Введите комментарии "
-        />
-      </div>
-      <div class="flex flex-col">
-        <label>Сумма операции</label>
-        <input
-          formControlName="amount"
-          class="text-sm"
-          type="number"
-          placeholder="Сумма операции"
-        />
-      </div>
-    </div>
-    } -->
 </div>
-<ng-template> </ng-template>
-<!-- [isDisabled]="addForm.invalid" -->
+<ng-template #error>
+  <div class="text-red-500">
+    <p>Произошла ошибка при добавлении операции.</p>
+    <p>Пожалуйста, попробуйте еще раз позже.</p>
+  </div>
+</ng-template>
+<!-- <span class="text-red-500">
+          {{ err === 'format' ? 'Неверный формат. Используйте ДД.ММ.ГГГГ' : '' }}
+          {{ err === 'notExist' ? 'Такой даты не существует' : '' }}
+          {{ err === 'future' ? 'Дата не может быть больше сегодняшней' : '' }}
+        </span> -->
