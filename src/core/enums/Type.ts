@@ -4,9 +4,13 @@ export enum OperationType {
 }
 
 export interface Transaction {
+  id: number;
   amount: number;
   categoryId: number;
   createdAt: Date;
+  category: {
+    name: string;
+  };
   type: OperationType;
   comment?: string;
 }

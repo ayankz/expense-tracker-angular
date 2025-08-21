@@ -1,0 +1,29 @@
+<h2>Добавление категории</h2>
+<div class="flex flex-col gap-4 py-10">
+  <div class="flex flex-col items-start gap-2">
+    <label>Тип</label>
+    <div class="flex gap-2">
+      <app-selector
+        (click)="select(OperationType.EXPENSE)"
+        [isActive]="selectedType === OperationType.EXPENSE"
+        label="Расход"
+      ></app-selector>
+      <app-selector
+        (click)="select(OperationType.INCOME)"
+        [isActive]="selectedType === OperationType.INCOME"
+        label="Поступление"
+      ></app-selector>
+    </div>
+  </div>
+  <div class="flex flex-col items-start gap-2">
+    <label>Новая категория</label>
+    <input
+      type="text"
+      [(ngModel)]="categoryName"
+      placeholder="Введите категорию"
+    />
+  </div>
+  <div class="w-full fixed bottom-0 right-0 p-10">
+    <app-button (click)="createCategory()" title="Save" class="text-red-500"></app-button>
+  </div>
+</div>

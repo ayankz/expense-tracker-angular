@@ -1,92 +1,135 @@
 <div class="flex flex-col gap-2 mt-4">
   <div class="flex justify-between mb-2">
+    @if(isReadyToAddCategory()) {
+    <mat-icon (click)="isReadyToAddCategory.set(false)"
+      >arrow_back_ios</mat-icon
+    >
+    } @else {
     <h3 class="text-xl">Добавление операции</h3>
+    }
     <mat-icon (click)="onClose()">close</mat-icon>
   </div>
-  <mat-tab-group
-    mat-stretch-tabs="false"
-    mat-align-tabs="start"
-    (selectedIndexChange)="resetActiveCategory($event)"
-  >
-    <mat-tab label="Расход">
-      <div class="mt-2 py-4 flex gap-4 align-center">
-        @for (category of expenseCategories; track category.id) {
-        <app-selector
-          [label]="category.name"
-          (click)="setCategory(category)"
-          [isActive]="activeCategory === category.name"
-        ></app-selector>
-        }
-        <app-selector></app-selector>
+  <ng-container *ngIf="!isReadyToAddCategory(); else addCategory">
+    <mat-tab-group
+      mat-stretch-tabs="false"
+      mat-align-tabs="start"
+      (selectedIndexChange)="resetActiveCategory($event)"
+    >
+      <mat-tab label="Расход">
+        <div class="mt-4 py-4 flex gap-4 align-center flex-wrap">
+          <ng-container *ngIf="expenseCategories.length > 0; else emptyState">
+            @for (category of expenseCategories; track category.id) {
+            <app-selector
+              [label]="category.name"
+              (click)="setCategory(category)"
+              [isActive]="activeCategory === category.name"
+            ></app-selector>
+            }
+            <app-selector
+              (click)="isReadyToAddCategory.set(true)"
+            ></app-selector>
+          </ng-container>
+        </div>
+      </mat-tab>
+      <mat-tab label="Поступление">
+        <div class="mt-4 py-4 flex gap-4 align-center flex-wrap">
+          <ng-container *ngIf="incomeCategories.length > 0; else emptyState">
+            @for (category of incomeCategories; track category.id) {
+            <app-selector
+              [label]="category.name"
+              (click)="setCategory(category)"
+              [isActive]="activeCategory === category.name"
+            ></app-selector>
+            }
+            <app-selector
+              (click)="isReadyToAddCategory.set(true)"
+            ></app-selector>
+          </ng-container>
+        </div>
+      </mat-tab>
+      <mat-tab label="Выписка">
+        <app-bank-statement></app-bank-statement>
+      </mat-tab>
+    </mat-tab-group>
+    @if (activeCategory) {
+    <form
+      [formGroup]="addForm"
+      class="flex flex-col gap-2"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="flex flex-col gap-1 items-start">
+        <label>Сумма</label>
+        <input
+          type="text"
+          formControlName="amount"
+          placeholder="Введите сумму"
+          mask="separator.0"
+          [thousandSeparator]="' '"
+          (input)="onAmountInput($event)"
+        />
       </div>
-    </mat-tab>
-    <mat-tab label="Поступление">
-      <div class="mt-4 py-4 flex gap-4 align-center">
-        @for (category of incomeCategories; track category.id) {
-        <app-selector
-          [label]="category.name"
-          (click)="setCategory(category)"
-          [isActive]="activeCategory === category.name"
-        ></app-selector>
-        }
+      <div class="flex flex-col gap-1 items-start">
+        <label>Комментарии</label>
+        <input
+          type="text"
+          formControlName="comment"
+          placeholder="Введите комментарии"
+        />
       </div>
-    </mat-tab>
-  </mat-tab-group>
-  @if (activeCategory) {
-  <form
-    [formGroup]="addForm"
-    class="flex flex-col gap-2"
-    (ngSubmit)="onSubmit()"
-  >
-    <div class="flex flex-col gap-1 items-start">
-      <label>Сумма</label>
-      <input
-        type="text"
-        formControlName="amount"
-        placeholder="Введите сумму"
-        mask="separator.0"
-        [thousandSeparator]="' '"
-        (input)="onAmountInput($event)"
-      />
-    </div>
-    <div class="flex flex-col gap-1 items-start">
-      <label>Комментарии</label>
-      <input
-        type="text"
-        formControlName="comment"
-        placeholder="Введите комментарии"
-      />
-    </div>
-    <div class="flex flex-col gap-1 items-start">
-      <label>Дата</label>
-      <input
-        type="text"
-        formControlName="date"
-        placeholder="дд.мм.гггг"
-        mask="00.00.0000"
-      />
-      <ng-container *ngIf="addForm.get('date')?.errors as errors">
-        <ng-container *ngIf="errors['invalidDate'] as err">
-          <span class="text-red-500 text-sm">
-            <ng-container [ngSwitch]="err">
-              <ng-template [ngSwitchCase]="'format'">
-                Неверный формат (dd.mm.yyyy)
-              </ng-template>
-              <ng-template [ngSwitchCase]="'notExist'">
-                Такой даты не существует
-              </ng-template>
-              <ng-template [ngSwitchCase]="'future'">
-                Дата не может быть больше сегодняшней
-              </ng-template>
-            </ng-container>
-          </span>
+      <div class="flex flex-col gap-1 items-start">
+        <label>Дата</label>
+        <input
+          type="text"
+          formControlName="date"
+          placeholder="дд.мм.гггг"
+          mask="00.00.0000"
+        />
+        <ng-container *ngIf="addForm.get('date')?.errors as errors">
+          <ng-container *ngIf="errors['invalidDate'] as err">
+            <span class="text-red-500 text-sm">
+              <ng-container [ngSwitch]="err">
+                <ng-template [ngSwitchCase]="'format'">
+                  Неверный формат (dd.mm.yyyy)
+                </ng-template>
+                <ng-template [ngSwitchCase]="'notExist'">
+                  Такой даты не существует
+                </ng-template>
+                <ng-template [ngSwitchCase]="'future'">
+                  Дата не может быть больше сегодняшней
+                </ng-template>
+              </ng-container>
+            </span>
+          </ng-container>
         </ng-container>
-      </ng-container>
-    </div>
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[200px]">
-      <app-button [isDisabled]="addForm.invalid" title="Сохранить"></app-button>
-    </div>
-  </form>
-  }
+      </div>
+      <div
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[200px]"
+      >
+        <app-button
+          [isDisabled]="addForm.invalid"
+          title="Сохранить"
+        ></app-button>
+      </div>
+    </form>
+    }
+  </ng-container>
 </div>
 
+<ng-template #emptyState>
+  <div class="flex flex-col gap-6 items-center justify-center py-10 w-full">
+    <div>
+      <mat-icon class="text-4xl">info</mat-icon>
+      <p class="mt-2 text-lg">Нет данных для отображения</p>
+    </div>
+    <app-button
+      title="Добавить"
+      (click)="isReadyToAddCategory.set(true)"
+    ></app-button>
+  </div>
+</ng-template>
+<ng-template #addCategory>
+  <app-add-category
+    (isActive)="isReadyToAddCategory()"
+    (isActiveChange)="isReadyToAddCategory.set(false)"
+  ></app-add-category>
+</ng-template>

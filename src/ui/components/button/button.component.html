@@ -1,1 +1,7 @@
-<button [class]="type === 'secondary' ?  'btn btn--secondary' : 'btn'" [disabled]="isDisabled" [type]="buttonType">{{title}}</button>
+<button
+  [ngClass]="[type === 'secondary' ? 'btn btn--secondary' : 'btn']"
+  [disabled]="isDisabled"
+  [type]="buttonType"
+>
+  {{ title }}
+</button>

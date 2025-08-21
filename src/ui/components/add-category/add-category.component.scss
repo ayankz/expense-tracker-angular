@@ -1,0 +1,14 @@
+input {
+    padding: 12px;
+    max-width: 250px;
+    width: 100%;
+    &::placeholder {
+      color: #000000;
+      font-size: 14px;
+    }
+  }
+  label {
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+  }

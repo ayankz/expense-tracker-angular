@@ -33,6 +33,7 @@ export class TransactionService extends BaseHttpService {
         map((transactions) => {
           const groupedMap = transactions.reduce((acc, tx) => {
             const date = new Date(tx.createdAt).toISOString().slice(0, 10);
+            console.log(date)
             if (!acc[date]) acc[date] = [];
             acc[date].push(tx);
             return acc;
@@ -50,6 +51,7 @@ export class TransactionService extends BaseHttpService {
         })
       )
       .subscribe((grouped) => {
+        console.log('Grouped Transactions:', grouped);
         this._transactions.set(grouped);
       });
   }

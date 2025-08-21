@@ -7,6 +7,8 @@ import { HomeComponent } from '../pages/home/home/home.component';
 import { authGuard } from '../core/guards/auth.guard';
 import { LoginComponent } from '../pages/auth/login/login.component';
 import { RegistrationComponent } from '../pages/auth/registration/registration.component';
+import { CardsComponent } from '../pages/cards/cards.component';
+import { LayoutComponent } from '../pages/layout/layout.component';
 
 export const routes: Routes = [
   {
@@ -21,9 +23,9 @@ export const routes: Routes = [
     data: { title: 'Добро пожаловать!' },
   },
   {
-    path:'registration',
+    path: 'registration',
     component: RegistrationComponent,
-    data: {title: 'Регистрация'}
+    data: { title: 'Регистрация' },
   },
   {
     path: 'debts',
@@ -48,5 +50,17 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: SavingsComponent,
     data: { title: 'Накопления' },
+  },
+  {
+    path: '',
+    canActivate: [authGuard],
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'cards',
+        component: CardsComponent,
+        data: { title: 'Карточки' },
+      },
+    ],
   },
 ];

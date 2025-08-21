@@ -28,6 +28,8 @@ import { ButtonComponent } from '../button/button.component';
 import { dateValidator } from '../../../core/validators/date.validator';
 import { Category } from '../../../core/interfaces';
 import { TransactionService } from '../../../core/services/transaction.service';
+import { BankStatementComponent } from "../bank-statement/bank-statement.component";
+import { AddCategoryComponent } from "../add-category/add-category.component";
 
 @Component({
   selector: 'app-add-form',
@@ -45,7 +47,9 @@ import { TransactionService } from '../../../core/services/transaction.service';
     SelectorComponent,
     NgxMaskDirective,
     ButtonComponent,
-  ],
+    BankStatementComponent,
+    AddCategoryComponent
+],
   providers: [provideNgxMask()],
   standalone: true,
   templateUrl: './add-form.component.html',
@@ -62,6 +66,7 @@ export class AddFormComponent {
   public categories = this.categoryService.categories;
   public categoryError = this.categoryService.categoryError;
   public isCreateModalOpen = signal<boolean>(false);
+  public isReadyToAddCategory = signal<boolean>(false);
 
   constructor() {
     this.addForm = this.fb.group({

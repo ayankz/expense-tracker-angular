@@ -23,11 +23,12 @@
   justify-content: space-between;
 }
 ::ng-deep .mdc-tab.mat-mdc-tab {
-  flex-basis: 50%;
+  flex-basis: 25%;
 }
 ::ng-deep .mat-mdc-tab.mdc-tab--active {
   background-color: transparent !important;
 }
 ::ng-deep .mdc-tab-indicator__content {
   border-color: #ceab0f !important;
+  
 }
