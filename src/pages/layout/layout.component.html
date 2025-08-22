@@ -1,2 +1,7 @@
-<span>{{ title$ | async }}</span>
-<router-outlet></router-outlet>
+<div class="p-4">
+  <div class="flex w-full mb-5">
+    <mat-icon routerLink="/">arrow_back_ios</mat-icon>
+    <span class="mx-6 align-center text-xl">{{ title$ | async }}</span>
+  </div>
+  <router-outlet></router-outlet>
+</div>

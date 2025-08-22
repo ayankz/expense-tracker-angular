@@ -16,7 +16,7 @@
       (selectedIndexChange)="resetActiveCategory($event)"
     >
       <mat-tab label="Расход">
-        <div class="mt-4 py-4 flex gap-4 align-center flex-wrap">
+        <div class="mt-4 py-4 flex gap-4 align-center overflow-x-scroll">
           <ng-container *ngIf="expenseCategories.length > 0; else emptyState">
             @for (category of expenseCategories; track category.id) {
             <app-selector
@@ -32,7 +32,7 @@
         </div>
       </mat-tab>
       <mat-tab label="Поступление">
-        <div class="mt-4 py-4 flex gap-4 align-center flex-wrap">
+        <div class="mt-4 py-4 flex gap-4 align-center overflow-x-scroll">
           <ng-container *ngIf="incomeCategories.length > 0; else emptyState">
             @for (category of incomeCategories; track category.id) {
             <app-selector

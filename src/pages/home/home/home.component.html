@@ -1,5 +1,4 @@
 <div class="flex p-4 flex-wrap gap-4">
-    <span>Ждем?</span>
     @for(item of mainElements; track item.title) {
         <app-main-item [title]="item.title" [icon]="item.icon" [link]="item.link"></app-main-item>
     }
