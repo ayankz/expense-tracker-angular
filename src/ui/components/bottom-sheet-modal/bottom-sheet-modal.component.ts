@@ -16,8 +16,12 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './bottom-sheet-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BottomSheetModalComponent  {
+export class BottomSheetModalComponent {
   private modalService = inject(GlobalModalService);
   isVisible = computed(() => this.modalService.isOpenModal());
+  content = this.modalService.content;
 
+  close() {
+    this.modalService.close();
+  }
 }

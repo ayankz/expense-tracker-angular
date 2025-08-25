@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BottomSheetModalComponent } from "../bottom-sheet-modal/bottom-sheet-modal.component";
 
 @Component({
   selector: 'app-card',

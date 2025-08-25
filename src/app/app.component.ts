@@ -7,6 +7,7 @@ import { NavbarComponent } from '../ui/components/navbar/navbar.component';
 import { MainTitleComponent } from '../ui/components/main-title/main-title.component';
 import { LoadingComponent } from '../ui/components/loading/loading.component';
 import { AuthService } from '../pages/auth/services/auth.service';
+import { BottomSheetModalComponent } from "../ui/components/bottom-sheet-modal/bottom-sheet-modal.component";
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ import { AuthService } from '../pages/auth/services/auth.service';
     NavbarComponent,
     MainTitleComponent,
     LoadingComponent,
-  ],
+    BottomSheetModalComponent
+],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.scss',

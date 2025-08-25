@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { GlobalModalService } from '../../../core/services/global-modal.service';
-import { CategoryService } from '../../../core/services/category.service';
+import { AddFormComponent } from '../add-form/add-form.component';
 
 @Component({
   selector: 'app-main-button',
@@ -13,7 +13,7 @@ export class MainButtonComponent {
   private modalService = inject(GlobalModalService);
   count = signal(0);
 
-  openModalHandle() {
-    this.modalService.open();
+  openModalHandler() {
+    this.modalService.open(AddFormComponent);
   }
 }
