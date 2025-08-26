@@ -38,7 +38,6 @@ export class ExpensesComponent implements OnInit {
   }
   onTouchStart(event: TouchEvent) {
     this.startX = event.touches[0].clientX;
-    // Prevent the default behavior to avoid conflicts with the expansion panel
     event.preventDefault();
   }
   onTouchMove(event: TouchEvent) {
@@ -49,10 +48,8 @@ export class ExpensesComponent implements OnInit {
 
   onTouchEnd(event: TouchEvent, item: any) {
     if (this.translateX < -100) {
-      // свайпнули достаточно влево → удалить
       this.delete.emit(item);
     }
-    // возврат на место
     this.translateX = 0;
   }
 }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { BottomSheetModalComponent } from "../bottom-sheet-modal/bottom-sheet-modal.component";
+import { CardType } from '../../../core/enums/Type';
 
 @Component({
   selector: 'app-card',
@@ -10,8 +10,8 @@ import { BottomSheetModalComponent } from "../bottom-sheet-modal/bottom-sheet-mo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent {
-  @Input() public color: string = '';
-  @Input() public type: string = '';
+  @Input() public type: CardType = CardType.VISA;
   @Input() public lastDigits: string = '';
+  CardType = CardType;
   
 }

@@ -8,7 +8,7 @@
     <div class="flex items-center gap-4">
       <img
         class="w-12 h-12"
-        [src]="type === 'visa' ? 'visa.svg' : 'master-card.svg'"
+        [src]="type === CardType.VISA ? 'visa.svg' : 'master-card.svg'"
         alt="card type"
       />
       <span>**** {{ lastDigits }}</span>

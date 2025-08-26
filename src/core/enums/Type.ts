@@ -3,6 +3,10 @@ export enum OperationType {
   INCOME = 'INCOME',
 }
 
+export enum CardType {
+  VISA = 'VISA',
+  MC = 'MC',
+}
 export interface Transaction {
   id: number;
   amount: number;
@@ -18,3 +22,11 @@ export interface GroupedTransactions {
   date: string;
   transactions: Transaction[];
 }
+ export interface Card{
+  id: number;
+  digits: string;
+  balance: number;
+  userId: number;
+  type: CardType;
+  createdAt: Date;
+ }
