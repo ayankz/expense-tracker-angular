@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-4">
   @for(card of cards; track card.id) {
-  <app-card [type]="card.type" [lastDigits]="card.digits"></app-card>
+  <app-card (cardEventEmitter)="cardRemoveHandler(card.id)" [card]="card"></app-card>
   }
   <app-add-card-button (click)="openModalHandler()"></app-add-card-button>
 </div>

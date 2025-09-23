@@ -11,5 +11,6 @@ import { MainItemComponent } from "../../../ui/components/main-item/main-item.co
 export class HomeComponent {
   public mainElements = [
     {title: 'Карточки', icon: 'card.svg', link: '/cards'},
+    {title: 'Импорт данных', icon: 'receipt-add.svg', link: '/statements'},
   ]
 }

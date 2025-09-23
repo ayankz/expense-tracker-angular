@@ -32,4 +32,7 @@ export class CardsComponent implements OnInit {
   openModalHandler() {
     this.modalService.open(AddCardComponent);
   }
+  cardRemoveHandler(id: number) {
+    this.cardService.removeCard(id);
+  }
 }

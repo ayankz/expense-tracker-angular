@@ -17,11 +17,30 @@ export class CardService extends BaseHttpService {
   loadCards(): void {
     this.get<Card[]>('/cards').subscribe({
       next: (cards) => {
-        console.log(23123)
         this._cards.set(cards);
       },
       error: (err) => {
         this.transactionError.set('Не удалось загрузить карты');
+      },
+    });
+  }
+  removeCard(id: number): void {
+    this.delete<void>(`/cards/${id}`).subscribe({
+      next: () => {
+        this._cards.set(this._cards().filter((card) => card.id !== id));
+      },
+      error: (err) => {
+        this.transactionError.set('Не удалось удалить карту');
+      },
+    });
+  }
+  createCard(card: Omit<Card, 'id'>): void {
+    this.post<Card>('/cards', card).subscribe({
+      next: (newCard) => {
+        this._cards.set([...this._cards(), newCard]);
+      },
+      error: (err) => {
+        this.transactionError.set('Не удалось добавить карту');
       },
     });
   }

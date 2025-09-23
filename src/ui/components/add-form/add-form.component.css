@@ -11,9 +11,16 @@
       font-size: 14px;
     }
   }
+  input[type="radio"] {
+    max-width: unset;
+    width: auto;
+    padding: 0;
+  }
   label {
     font-size: 14px;
     color: #000000;
+    position: static;
+      left: 0;
   }
   :ng-deep mat-tab {
     flex-basis: 50%;
@@ -30,5 +37,4 @@
 }
 ::ng-deep .mdc-tab-indicator__content {
   border-color: #ceab0f !important;
-  
 }

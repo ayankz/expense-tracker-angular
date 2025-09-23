@@ -9,6 +9,7 @@ import { LoginComponent } from '../pages/auth/login/login.component';
 import { RegistrationComponent } from '../pages/auth/registration/registration.component';
 import { CardsComponent } from '../pages/cards/cards.component';
 import { LayoutComponent } from '../pages/layout/layout.component';
+import { StatementsComponent } from '../pages/statements/statements.component';
 
 export const routes: Routes = [
   {
@@ -60,6 +61,11 @@ export const routes: Routes = [
         path: 'cards',
         component: CardsComponent,
         data: { title: 'Карточки' },
+      },
+      {
+        path: 'statements',
+        component: StatementsComponent,
+        data: { title: 'Выписки' },
       },
     ],
   },

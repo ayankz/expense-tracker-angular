@@ -68,6 +68,11 @@
           (input)="onAmountInput($event)"
         />
       </div>
+      <div class="flex flex-col gap-1">
+        @for (card of cards(); track card.id) {
+        <app-card-option [card]="card"></app-card-option>
+        }
+      </div>
       <div class="flex flex-col gap-1 items-start">
         <label>Комментарии</label>
         <input

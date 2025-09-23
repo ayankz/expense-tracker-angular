@@ -30,6 +30,9 @@ import { Category } from '../../../core/interfaces';
 import { TransactionService } from '../../../core/services/transaction.service';
 import { BankStatementComponent } from "../bank-statement/bank-statement.component";
 import { AddCategoryComponent } from "../add-category/add-category.component";
+import { CardService } from '../../../core/services/card.service';
+import { CardComponent } from "../card/card.component";
+import { AppCardOptionComponent } from '../app-card-option/app-card-option.component';
 
 @Component({
   selector: 'app-add-form',
@@ -43,12 +46,13 @@ import { AddCategoryComponent } from "../add-category/add-category.component";
     FormsModule,
     MatIconModule,
     MatTabsModule,
+    AppCardOptionComponent,
     CommonModule,
     SelectorComponent,
     NgxMaskDirective,
     ButtonComponent,
     BankStatementComponent,
-    AddCategoryComponent
+    AddCategoryComponent,
 ],
   providers: [provideNgxMask()],
   standalone: true,
@@ -59,11 +63,13 @@ import { AddCategoryComponent } from "../add-category/add-category.component";
 export class AddFormComponent {
   private categoryService = inject(CategoryService);
   private modalService = inject(GlobalModalService);
+  private cardService = inject(CardService);
   private transactionService = inject(TransactionService);
   private fb = inject(FormBuilder);
 
   public addForm: FormGroup;
   public categories = this.categoryService.categories;
+  public cards = this.cardService.cards;
   public categoryError = this.categoryService.categoryError;
   public isCreateModalOpen = signal<boolean>(false);
   public isReadyToAddCategory = signal<boolean>(false);
@@ -71,12 +77,14 @@ export class AddFormComponent {
   constructor() {
     this.addForm = this.fb.group({
       type: [OperationType.EXPENSE],
-      categoryId: [''],
+      categoryId: ['', Validators.required],
+      cardId: [1, Validators.required],
       date: ['', [Validators.required, dateValidator()]],
       comment: [''],
       amount: ['', Validators.required],
     });
     this.categoryService.loadCategories();
+    this.cardService.loadCards();
   }
 
   selectedOperationTypes: OperationType | null = null;
@@ -151,7 +159,7 @@ export class AddFormComponent {
 
   onSubmit() {
     const { date, ...formValue } = this.addForm.value;
-
+    console.log(this.addForm.value);
     if (date) {
       const day = Number(date.slice(0, 2));
       const month = Number(date.slice(2, 4));

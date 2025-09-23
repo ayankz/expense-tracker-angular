@@ -1,6 +1,68 @@
 <div class="flex flex-col gap-2 mt-4">
-  <div class="flex justify-between mb-2">
+  <div class="flex justify-between mb-4">
     <h3 class="text-xl">Добавление карточки</h3>
     <mat-icon (click)="close()">close</mat-icon>
   </div>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="w-full flex flex-col gap-6"
+  >
+    <div class="flex flex-col gap-1">
+      <label>Введите последние 4 цифры карты</label>
+      <input
+        type="text"
+        appCardMask
+        placeholder="Последние 4 цифры"
+        formControlName="digits"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label>Начальный остаток</label>
+      <input
+        type="text"
+        mask="separator.2"
+        maxlength="10"
+        prefix="₸"
+        [thousandSeparator]="' '"
+        placeholder="Начальный остаток"
+        formControlName="balance"
+      />
+    </div>
+    <div class="flex  gap-2">
+      <label
+        class="flex gap-1 items-center p-2 rounded-lg basis-1/2 cursor-pointer border"
+        [class.border-[#CEAB0F]]="form.get('type')?.value === 'MC'"
+        [class.border-gray-300]="form.get('type')?.value !== 'MC'"
+      >
+        <input
+          type="radio"
+          formControlName="type"
+          [value]="'MC'"
+          class="hidden"
+        />
+        <img class="w-12 h-12" [src]="'master-card.svg'" alt="card type" />
+        <span class="text-sm font-bold">Master Card</span>
+      </label>
+      <label
+        class="flex gap-1 items-center p-2 rounded-lg basis-1/2 cursor-pointer border"
+        [class.border-[#CEAB0F]]="form.get('type')?.value === 'VISA'"
+        [class.border-gray-300]="form.get('type')?.value !== 'VISA'"
+      >
+        <input
+          type="radio"
+          formControlName="type"
+          [value]="'VISA'"
+          class="hidden"
+        />
+        <img class="w-12 h-12" [src]="'visa.svg'" alt="card type" />
+        <span class="text-sm font-bold">Visa</span>
+      </label>
+    </div>
+    <app-button
+      [isDisabled]="form.invalid"
+      title="Добавить карточку"
+      type="submit"
+    ></app-button>
+  </form>
 </div>

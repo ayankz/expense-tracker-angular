@@ -9,9 +9,10 @@ import {
 import { TransactionService } from '../../core/services/transaction.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { EmptyComponent } from "../../ui/components/empty/empty.component";
 @Component({
   selector: 'app-expenses',
-  imports: [MatExpansionModule, DatePipe, CurrencyPipe, CommonModule],
+  imports: [MatExpansionModule, DatePipe, CurrencyPipe, CommonModule, EmptyComponent],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
