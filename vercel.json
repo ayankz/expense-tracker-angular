@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://wallet.taptattoo.kz/$1",
+      "permanent": true
+    }
+  ]
+}
