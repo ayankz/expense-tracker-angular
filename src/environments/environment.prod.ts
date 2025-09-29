@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://server.taptattoo.kz/api',
+  apiUrl: 'https://server.taptattoo.kz/api',
 };
