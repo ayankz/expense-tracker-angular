@@ -1,0 +1,47 @@
+@if (totalPages() > 1 ){
+<div class="flex justify-center items-center space-x-2">
+  <button
+    (click)="prevPage()"
+    [disabled]="currentPage() === 1"
+    class="p-2 rounded-full transition-colors duration-200"
+    [ngClass]="
+      currentPage() === 1
+        ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+        : 'text-gray-700 hover:bg-amber-100 hover:text-amber-800 bg-white shadow-sm'
+    "
+    title="Предыдущая страница"
+  >
+   
+  <img class="w-4 h-4" src="prev.svg" alt="prev">
+  </button>
+
+  @for (page of pageNumbers(); track page) {
+  <button
+    (click)="goToPage(page)"
+    [class]="
+      currentPage() === page
+        ? 'bg-amber-600 text-white shadow-md'
+        : 'bg-white text-gray-700 hover:bg-gray-100'
+    "
+    class="w-8 h-8 rounded-full text-sm font-semibold transition-colors duration-200"
+  >
+    {{ page }}
+  </button>
+  }
+
+  <button
+    (click)="nextPage()"
+    [disabled]="currentPage() === totalPages()"
+    class="p-2 rounded-full transition-colors duration-200"
+    [ngClass]="
+      currentPage() === totalPages()
+        ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+        : 'text-gray-700 hover:bg-amber-100 hover:text-amber-800 bg-white shadow-sm'
+    "
+    title="Следующая страница"
+  >
+  <img class="w-4 h-4" src="next.svg" alt="next"> 
+    
+  </button>
+</div>
+}

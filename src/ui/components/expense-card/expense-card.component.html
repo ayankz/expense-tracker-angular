@@ -1,0 +1,46 @@
+<div class="flex flex-col border-b-1 border-gray-300">
+  <span class="text-sm font-medium text-gray-500">{{
+    expense().date | date : "mediumDate"
+  }}</span>
+  <div class="flex flex-col gap-2 py-2 pl-2">
+    @for(transaction of expense().transactions; track transaction.id){
+    <div
+      class="p-2 rounded-xl md:w-1/2 shadow-md transition duration-300 hover:shadow-lg bg-white flex flex-col justify-between items-start gap-1"
+    >
+      <div class="flex gap-2 items-center justify-between w-full">
+        <div class="flex flex-col items-start gap-1">
+            <span
+              class="text-sm font-medium md:text-base lg:text-lg"
+              [moneyFormat]="transaction.amount"
+              [type]="transaction.type"
+              [currencySymbol]="'₸'"
+            ></span>
+            @if(transaction.card){
+            <span class="text-sm font-medium text-xs text-black-500 md:text-base lg:text-lg"
+              >(Карта {{ transaction.card.digits }})</span
+            >
+            }
+        </div>
+        <div class="flex flex-col items-end gap-1">
+          <div
+            class="rounded-md shadow-md border border-[#CEAB0f] text-xs p-1 md:text-base lg:text-lg"
+          >
+            {{ transaction.category.name }}
+          </div>
+          <img
+            [src]="
+              transaction.card.type === cardType.MC
+                ? 'master-card.svg'
+                : 'visa.svg'
+            "
+            alt="card-type"
+          />
+        </div>
+      </div>
+      <span class="text-xs text-gray-500 italic md:text-base lg:text-lg">{{
+        transaction.comment || "Без комментария"
+      }}</span>
+    </div>
+    }
+  </div>
+</div>

@@ -11,7 +11,7 @@ export abstract class BaseHttpService {
   protected constructor(protected readonly http: HttpClient) {}
 
   protected request<T>(
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
     url: string,
     options?: {
       body?: unknown;
@@ -67,12 +67,12 @@ export abstract class BaseHttpService {
       params?: HttpParams;
     }
   ): Observable<T> {
-  return this.request<T>('POST', `${this.baseUrl}${url}`, {
-    body,
-    retryCount,
-    ...options,
-  });
-}
+    return this.request<T>('POST', `${this.baseUrl}${url}`, {
+      body,
+      retryCount,
+      ...options,
+    });
+  }
 
   protected put<T>(url: string, body?: unknown, retryCount = 0): Observable<T> {
     return this.request<T>('PUT', `${this.baseUrl}${url}`, {
@@ -83,5 +83,16 @@ export abstract class BaseHttpService {
 
   protected delete<T>(url: string, retryCount = 0): Observable<T> {
     return this.request<T>('DELETE', `${this.baseUrl}${url}`, { retryCount });
+  }
+
+  protected update<T>(
+    url: string,
+    body: unknown,
+    retryCount = 0
+  ): Observable<T> {
+    return this.request<T>('PATCH', `${this.baseUrl}${url}`, {
+      body,
+      retryCount,
+    });
   }
 }

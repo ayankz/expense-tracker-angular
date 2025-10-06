@@ -1,6 +1,22 @@
-<ng-container *ngIf="grouppedTransactions.length; else emptyState">
+<div class="flex flex-col gap-2 p-4 pt-0 h-[70vh] overflow-y-auto">
+  @for(item of grouppedTransactions; track item.date){
+    <app-expense-card [expense]="item"></app-expense-card>  
+  <!-- <div>
+    <span
+      >{{ item.date | date : "mediumDate" }} ({{
+        sumOfTheDay(item.date) | currency : "KZT" : "symbol" : "1.2-2" : "ru"
+      }})</span
+    >
+    @for(transaction of item.transactions; track transaction.id){
+      <span>{{transaction.category.name}}</span>
+    }
+  </div> -->
+  }
+</div>
+
+<!-- <ng-container *ngIf="grouppedTransactions.length; else emptyState">
   <div
-    class="p-2 m-2 rounded-md bg-white shadow-md flex flex-col gap-2 h-[500px] overflow-y-auto"
+    class="p-2 m-2 flex flex-col gap-2 h-[500px] overflow-y-auto"
   >
     <div class="flex flex-col gap-2">
       @for(item of grouppedTransactions; track item.date){
@@ -46,11 +62,11 @@
       }
     </div>
   </div>
-</ng-container>
+</ng-container> -->
 
-<ng-template #emptyState>
+<!-- <ng-template #emptyState>
   <app-empty></app-empty>
-</ng-template>
+</ng-template> -->
 
 <!-- <div
       class="swipe-item"
