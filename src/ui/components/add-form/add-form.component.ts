@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -28,10 +29,9 @@ import { ButtonComponent } from '../button/button.component';
 import { dateValidator } from '../../../core/validators/date.validator';
 import { Category } from '../../../core/interfaces';
 import { TransactionService } from '../../../core/services/transaction.service';
-import { BankStatementComponent } from "../bank-statement/bank-statement.component";
-import { AddCategoryComponent } from "../add-category/add-category.component";
+import { BankStatementComponent } from '../bank-statement/bank-statement.component';
+import { AddCategoryComponent } from '../add-category/add-category.component';
 import { CardService } from '../../../core/services/card.service';
-import { CardComponent } from "../card/card.component";
 import { AppCardOptionComponent } from '../app-card-option/app-card-option.component';
 
 @Component({
@@ -46,13 +46,13 @@ import { AppCardOptionComponent } from '../app-card-option/app-card-option.compo
     FormsModule,
     MatIconModule,
     MatTabsModule,
-    AppCardOptionComponent,
     CommonModule,
     SelectorComponent,
     NgxMaskDirective,
     ButtonComponent,
     BankStatementComponent,
     AddCategoryComponent,
+    AppCardOptionComponent
 ],
   providers: [provideNgxMask()],
   standalone: true,
@@ -73,12 +73,12 @@ export class AddFormComponent {
   public categoryError = this.categoryService.categoryError;
   public isCreateModalOpen = signal<boolean>(false);
   public isReadyToAddCategory = signal<boolean>(false);
-
+  public selectedCardId: string = '1234';
   constructor() {
     this.addForm = this.fb.group({
       type: [OperationType.EXPENSE],
       categoryId: ['', Validators.required],
-      cardId: [1, Validators.required],
+      cardId: [this.cards()[0]?.id ?? null, Validators.required],
       date: ['', [Validators.required, dateValidator()]],
       comment: [''],
       amount: ['', Validators.required],
@@ -93,7 +93,11 @@ export class AddFormComponent {
     { label: 'Расход', value: OperationType.EXPENSE },
     { label: 'Поступление', value: OperationType.INCOME },
   ];
-
+  handleCardSelection(id: string) {
+    this.selectedCardId = id;
+    console.log('Выбрана карта:', id);
+    // Здесь вы можете обновить модель транзакции: this.transaction.cardId = id;
+  }
   onClose() {
     this.resetForm();
     this.modalService.close();
@@ -105,6 +109,10 @@ export class AddFormComponent {
     const value = digits ? Number(digits) : null;
     this.addForm.get('amount')?.setValue(value, { emitEvent: false });
   }
+
+  get cardControl(): FormControl {
+  return this.addForm.get('cardId') as FormControl;
+}
 
   setCategory(category: Category) {
     this.activeCategory = category.name;
@@ -166,7 +174,7 @@ export class AddFormComponent {
       const year = Number(date.slice(4, 8));
       formValue.createdAt = new Date(Date.UTC(year, month - 1, day));
     }
-    
+
     this.transactionService.createTransaction(formValue);
     this.onClose();
   }

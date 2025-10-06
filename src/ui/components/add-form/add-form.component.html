@@ -16,7 +16,7 @@
       (selectedIndexChange)="resetActiveCategory($event)"
     >
       <mat-tab label="Расход">
-        <div class="mt-4 py-4 flex gap-4 align-center overflow-x-scroll">
+        <div class="py-4 flex gap-4 align-center overflow-x-scroll">
           <ng-container *ngIf="expenseCategories.length > 0; else emptyState">
             @for (category of expenseCategories; track category.id) {
             <app-selector
@@ -68,11 +68,10 @@
           (input)="onAmountInput($event)"
         />
       </div>
-      <div class="flex flex-col gap-1">
-        @for (card of cards(); track card.id) {
-        <app-card-option [card]="card"></app-card-option>
-        }
-      </div>
+      <app-card-option
+        [cards]="cards()"
+        [control]="cardControl"
+      ></app-card-option>
       <div class="flex flex-col gap-1 items-start">
         <label>Комментарии</label>
         <input
@@ -112,6 +111,7 @@
       >
         <app-button
           title="Сохранить"
+          [isDisabled]="addForm.invalid"
         ></app-button>
       </div>
     </form>

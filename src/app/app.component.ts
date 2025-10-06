@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AvatarMenuComponent } from '../ui/components/avatar-menu/avatar-menu.component';
 import { HeaderComponent } from '../ui/components/header/header.component';
