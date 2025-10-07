@@ -24,7 +24,6 @@ export class ExpensesComponent implements OnInit {
 
   ngOnInit() {
     this.categoryService.loadTransactions();
-    console.log(this.grouppedTransactions);
   }
 
   get grouppedTransactions() {

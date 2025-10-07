@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -52,8 +53,8 @@ import { AppCardOptionComponent } from '../app-card-option/app-card-option.compo
     ButtonComponent,
     BankStatementComponent,
     AddCategoryComponent,
-    AppCardOptionComponent
-],
+    AppCardOptionComponent,
+  ],
   providers: [provideNgxMask()],
   standalone: true,
   templateUrl: './add-form.component.html',
@@ -73,31 +74,35 @@ export class AddFormComponent {
   public categoryError = this.categoryService.categoryError;
   public isCreateModalOpen = signal<boolean>(false);
   public isReadyToAddCategory = signal<boolean>(false);
-  public selectedCardId: string = '1234';
   constructor() {
+    this.categoryService.loadCategories();
+    this.cardService.loadCards();
+    const today = new Date();
+    const formattedDate = this.formatDate(today);
+    console.log(formattedDate);
     this.addForm = this.fb.group({
       type: [OperationType.EXPENSE],
       categoryId: ['', Validators.required],
-      cardId: [this.cards()[0]?.id ?? null, Validators.required],
-      date: ['', [Validators.required, dateValidator()]],
+      cardId: [null, Validators.required],
+      date: [formattedDate, [Validators.required, dateValidator()]],
       comment: [''],
       amount: ['', Validators.required],
     });
-    this.categoryService.loadCategories();
-    this.cardService.loadCards();
-  }
 
+    effect(() => {
+      const cards = this.cardService.cards(); // signal<GroupCard[]>
+      if (cards.length && !this.addForm.value.cardId) {
+        this.addForm.patchValue({ cardId: cards[0].id });
+      }
+    });
+  }
   selectedOperationTypes: OperationType | null = null;
   activeCategory: string | null = null;
   operationTypes = [
     { label: 'Расход', value: OperationType.EXPENSE },
     { label: 'Поступление', value: OperationType.INCOME },
   ];
-  handleCardSelection(id: string) {
-    this.selectedCardId = id;
-    console.log('Выбрана карта:', id);
-    // Здесь вы можете обновить модель транзакции: this.transaction.cardId = id;
-  }
+
   onClose() {
     this.resetForm();
     this.modalService.close();
@@ -111,8 +116,8 @@ export class AddFormComponent {
   }
 
   get cardControl(): FormControl {
-  return this.addForm.get('cardId') as FormControl;
-}
+    return this.addForm.get('cardId') as FormControl;
+  }
 
   setCategory(category: Category) {
     this.activeCategory = category.name;
@@ -143,8 +148,14 @@ export class AddFormComponent {
 
   resetActiveCategory(index: number) {
     this.resetForm();
+
     this.type = this.operationTypes[index].value;
     this.addForm.patchValue({ type: this.type });
+
+    const cardsArray = this.cards();
+    const defaultCardId = cardsArray.length > 0 ? cardsArray[0].id : null;
+
+    this.addForm.patchValue({ cardId: defaultCardId });
   }
 
   loadCategories() {
@@ -164,17 +175,21 @@ export class AddFormComponent {
       this.addForm.patchValue({ type: '' });
     }
   }
+  private formatDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}${month}${year}`;
+  }
 
   onSubmit() {
     const { date, ...formValue } = this.addForm.value;
-    console.log(this.addForm.value);
     if (date) {
       const day = Number(date.slice(0, 2));
       const month = Number(date.slice(2, 4));
       const year = Number(date.slice(4, 8));
       formValue.createdAt = new Date(Date.UTC(year, month - 1, day));
     }
-
     this.transactionService.createTransaction(formValue);
     this.onClose();
   }

@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
-  OnInit,
 } from '@angular/core';
 import { CardType, TransactionView } from '../../../core/enums/Type';
 import { DatePipe } from '@angular/common';
@@ -16,10 +15,8 @@ import { MoneyFormatDirective } from '../../../core/directive/money-format.direc
   styleUrl: './expense-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExpenseCardComponent implements OnInit {
+export class ExpenseCardComponent  {
   expense = input.required<TransactionView>();
   public cardType = CardType;
-  ngOnInit() {
-    console.log(this.expense());
-  }
+
 }

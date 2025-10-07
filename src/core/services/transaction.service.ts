@@ -18,15 +18,15 @@ export class TransactionService extends BaseHttpService {
 
   createTransaction(transactionData: Transaction) {
     this.post<Transaction>('/operations', transactionData).subscribe({
-      next: (response) => {
-        console.log('Transaction created successfully:', response);
+      next: () => {
+        this.loadTransactions();
       },
       error: (error) => {
         console.error('Error creating transaction:', error);
       },
     });
-    console.log(transactionData);
   }
+
   loadTransactions(): void {
     this.get<Transaction[]>('/operations')
       .pipe(
@@ -50,7 +50,6 @@ export class TransactionService extends BaseHttpService {
         })
       )
       .subscribe((grouped) => {
-        console.log('Grouped Transactions:', grouped);
         this._transactions.set(grouped);
       });
   }
