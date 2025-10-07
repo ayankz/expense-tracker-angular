@@ -1,0 +1,13 @@
+.settled-card {
+  border-left: 6px solid #d1d5db;
+  opacity: 0.65;
+}
+.settled-card:hover {
+  opacity: 1;
+}
+.debt-card-borrowed {
+  border-left: 6px solid #b45309; /* amber-700 */
+}
+.debt-card-lent {
+  border-left: 6px solid #f59e0b; /* amber-500 */
+}

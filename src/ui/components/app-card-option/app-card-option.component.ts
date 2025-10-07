@@ -1,19 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { Card } from '../../../core/enums/Type';
-import { FormGroupDirective } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-card-option',
-  imports: [CommonModule],
+  imports: [CommonModule, MatSelectModule, ReactiveFormsModule],
   templateUrl: './app-card-option.component.html',
   styleUrl: './app-card-option.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppCardOptionComponent {
-  @Input() card!: Card;
-  constructor(public rootFormGroup: FormGroupDirective) {}
-  get form() {
-    return this.rootFormGroup.control;
-  }
+  public cards = input.required<Card[]>();
+  public control = input.required<FormControl>();
+  constructor() {}
 }

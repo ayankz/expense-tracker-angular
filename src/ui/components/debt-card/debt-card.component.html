@@ -1,0 +1,82 @@
+<div [class]="getCardClasses(debt())">
+  <div class="flex flex-col gap-2">
+    <div class="flex gap-2 items-center justify-between w-full">
+      <div class="flex items-center">
+        <span class="text-sm mr-2 flex-shrink-0">{{
+          debt().direction === DebtDirection.BORROWED ? "💰" : "🤝"
+        }}</span>
+        <p class="font-semibold text-gray-800 truncate text-sm">
+          {{ debt().counterparty }}
+        </p>
+      </div>
+      <p [class]="getTypeLabelColor(debt())" class="text-sm font-extrabold">
+        {{ debt().amount | currency : "KZT" : "symbol" : "1.2-2" : "ru" }}
+      </p>
+    </div>
+    <div class="flex gap-2 items-center justify-between w-full">
+      <div class="flex flex-col">
+        <p class="text-xs text-gray-500 mt-1">
+          Дата займа: {{ debt().createdAt | date : "dd.MM.yyyy" }}
+        </p>
+        <p class="text-xs text-gray-500 mt-1">
+          Дата возврата: {{ debt().dueDate | date : "dd.MM.yyyy" }}
+        </p>
+      </div>
+      <div class="flex-shrink-0 flex items-center space-x-2">
+        <!-- Кнопка удаления -->
+        <button
+          (click)="deleteDebt(debt().id)"
+          class="p-2 rounded-full text-gray-400 hover:text-red-600 cursor-pointer hover:bg-gray-100 transition-colors"
+          title="Удалить долг"
+        >
+          <img class="w-6 h-6" src="remove.svg" alt="remove" />
+        </button>
+        @if(debt().status !== DebtStatus.PAID){
+        <button
+          (click)="markAsPaid(debt().id)"
+          class="p-2 rounded-full text-green-500 hover:text-white hover:bg-green-600 transition-colors border border-green-500"
+          title="Погасить долг"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            ></path>
+          </svg>
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div >
+          <div class="flex items-center mb-1">
+            <span class="text-xl mr-2">{{
+              debt.direction === DebtDirection.BORROWED ? "💰" : "🤝"
+            }}</span>
+            <span [class]="getTypeLabelColor(debt)">
+              {{ getTypeText(debt.direction) }}
+            </span>
+          </div>
+          <p class="text-lg font-bold text-gray-800">{{ debt.counterparty }}</p>
+          <p class="text-xs text-gray-500 mt-1">
+            {{
+              debt.direction === DebtDirection.BORROWED
+                ? "К возврату"
+                : "Мне вернут"
+            }}:
+            {{ debt.amount | currency : "KZT" : "symbol" : "1.2-2" : "ru" }}
+          </p>
+          <p class="text-xs text-gray-500 mt-1">
+            Выплатить не позднее: {{ debt.dueDate | date : "dd.MMMM.yy" }}
+          </p>
+        </div> -->

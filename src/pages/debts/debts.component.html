@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-2 p-4 pt-0 ">
+  <div class="flex gap-2 justify-between items-center">
+    <span>Фильтры</span>
+    <app-pagination
+      [currentPage]="metaData?.page || 1"
+      [totalPages]="metaData?.lastPage || 0"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </div>
+  <div class="flex flex-col gap-2 h-[70vh] overflow-y-auto pb-25">
+    @for (debt of debts; track debt.id){
+    <app-debt-card (onRemove)="remove($event)" (onMarkAsPaid)="markAsPaid($event)" [debt]="debt"></app-debt-card>
+    }
+  </div>
+</div>
+<!-- <div class="grid grid-cols-1 sm:grid-cols-6 gap-4">
+    <div class="bg-white p-5 rounded-xl shadow-lg border border-amber-300">
+      <h2 class="text-base sm:text-lg font-semibold text-gray-600 mb-1">
+        Сумма активных долгов (Взял)
+      </h2>
+      <div class="text-xl sm:text-3xl font-bold text-amber-700">
+        {{ totalBorrowed() | currency : "KZT" : "symbol" : "1.2-2" : "ru" }}
+      </div>
+      <p class="text-xs sm:text-sm text-gray-500 mt-2">
+        Сколько нужно вернуть.
+      </p>
+    </div>
+    <div class="bg-white p-5 rounded-xl shadow-lg border border-amber-300">
+      <h2 class="text-base sm:text-lg font-semibold text-gray-600 mb-1">
+        Мне должны (Выдал)
+      </h2>
+      <div class="text-xl sm:text-3xl font-bold text-amber-500">
+        {{ totalLent() | currency : "KZT" : "symbol" : "1.2-2" : "ru" }}
+      </div>
+      <p class="text-xs sm:text-sm text-gray-500 mt-2">
+        Сколько должны вернуть мне.
+      </p>
+    </div>
+  </div> -->

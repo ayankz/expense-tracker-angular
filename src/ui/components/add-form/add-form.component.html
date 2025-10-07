@@ -16,7 +16,10 @@
       (selectedIndexChange)="resetActiveCategory($event)"
     >
       <mat-tab label="Расход">
-        <div class="mt-4 py-4 flex gap-4 align-center overflow-x-scroll">
+        <div class="py-4 mt-1 flex gap-4 align-center overflow-x-scroll">
+            <app-selector
+              (click)="isReadyToAddCategory.set(true)"
+            ></app-selector>
           <ng-container *ngIf="expenseCategories.length > 0; else emptyState">
             @for (category of expenseCategories; track category.id) {
             <app-selector
@@ -25,14 +28,12 @@
               [isActive]="activeCategory === category.name"
             ></app-selector>
             }
-            <app-selector
-              (click)="isReadyToAddCategory.set(true)"
-            ></app-selector>
+          
           </ng-container>
         </div>
       </mat-tab>
       <mat-tab label="Поступление">
-        <div class="mt-4 py-4 flex gap-4 align-center overflow-x-scroll">
+        <div class="mt-1 py-4 flex gap-4 align-center overflow-x-scroll">
           <ng-container *ngIf="incomeCategories.length > 0; else emptyState">
             @for (category of incomeCategories; track category.id) {
             <app-selector
@@ -46,9 +47,6 @@
             ></app-selector>
           </ng-container>
         </div>
-      </mat-tab>
-      <mat-tab label="Выписка">
-        <app-bank-statement></app-bank-statement>
       </mat-tab>
     </mat-tab-group>
     @if (activeCategory) {
@@ -68,11 +66,11 @@
           (input)="onAmountInput($event)"
         />
       </div>
-      <div class="flex flex-col gap-1">
-        @for (card of cards(); track card.id) {
-        <app-card-option [card]="card"></app-card-option>
-        }
-      </div>
+      <label>С какой карты </label>
+      <app-card-option
+        [cards]="cards()"
+        [control]="cardControl"
+      ></app-card-option>
       <div class="flex flex-col gap-1 items-start">
         <label>Комментарии</label>
         <input
@@ -83,7 +81,7 @@
       </div>
       <div class="flex flex-col gap-1 items-start">
         <label>Дата</label>
-        <input
+          <input
           type="text"
           formControlName="date"
           placeholder="дд.мм.гггг"
@@ -111,8 +109,8 @@
         class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[200px]"
       >
         <app-button
-          [isDisabled]="addForm.invalid"
           title="Сохранить"
+          [isDisabled]="addForm.invalid"
         ></app-button>
       </div>
     </form>

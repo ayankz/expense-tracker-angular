@@ -1,11 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   signal,
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -28,10 +30,9 @@ import { ButtonComponent } from '../button/button.component';
 import { dateValidator } from '../../../core/validators/date.validator';
 import { Category } from '../../../core/interfaces';
 import { TransactionService } from '../../../core/services/transaction.service';
-import { BankStatementComponent } from "../bank-statement/bank-statement.component";
-import { AddCategoryComponent } from "../add-category/add-category.component";
+import { BankStatementComponent } from '../bank-statement/bank-statement.component';
+import { AddCategoryComponent } from '../add-category/add-category.component';
 import { CardService } from '../../../core/services/card.service';
-import { CardComponent } from "../card/card.component";
 import { AppCardOptionComponent } from '../app-card-option/app-card-option.component';
 
 @Component({
@@ -46,14 +47,14 @@ import { AppCardOptionComponent } from '../app-card-option/app-card-option.compo
     FormsModule,
     MatIconModule,
     MatTabsModule,
-    AppCardOptionComponent,
     CommonModule,
     SelectorComponent,
     NgxMaskDirective,
     ButtonComponent,
     BankStatementComponent,
     AddCategoryComponent,
-],
+    AppCardOptionComponent,
+  ],
   providers: [provideNgxMask()],
   standalone: true,
   templateUrl: './add-form.component.html',
@@ -73,20 +74,28 @@ export class AddFormComponent {
   public categoryError = this.categoryService.categoryError;
   public isCreateModalOpen = signal<boolean>(false);
   public isReadyToAddCategory = signal<boolean>(false);
-
   constructor() {
+    this.categoryService.loadCategories();
+    this.cardService.loadCards();
+    const today = new Date();
+    const formattedDate = this.formatDate(today);
+    console.log(formattedDate);
     this.addForm = this.fb.group({
       type: [OperationType.EXPENSE],
       categoryId: ['', Validators.required],
-      cardId: [1, Validators.required],
-      date: ['', [Validators.required, dateValidator()]],
+      cardId: [null, Validators.required],
+      date: [formattedDate, [Validators.required, dateValidator()]],
       comment: [''],
       amount: ['', Validators.required],
     });
-    this.categoryService.loadCategories();
-    this.cardService.loadCards();
-  }
 
+    effect(() => {
+      const cards = this.cardService.cards(); // signal<GroupCard[]>
+      if (cards.length && !this.addForm.value.cardId) {
+        this.addForm.patchValue({ cardId: cards[0].id });
+      }
+    });
+  }
   selectedOperationTypes: OperationType | null = null;
   activeCategory: string | null = null;
   operationTypes = [
@@ -104,6 +113,10 @@ export class AddFormComponent {
     const digits = input.value.replace(/\s/g, '');
     const value = digits ? Number(digits) : null;
     this.addForm.get('amount')?.setValue(value, { emitEvent: false });
+  }
+
+  get cardControl(): FormControl {
+    return this.addForm.get('cardId') as FormControl;
   }
 
   setCategory(category: Category) {
@@ -135,8 +148,14 @@ export class AddFormComponent {
 
   resetActiveCategory(index: number) {
     this.resetForm();
+
     this.type = this.operationTypes[index].value;
     this.addForm.patchValue({ type: this.type });
+
+    const cardsArray = this.cards();
+    const defaultCardId = cardsArray.length > 0 ? cardsArray[0].id : null;
+
+    this.addForm.patchValue({ cardId: defaultCardId });
   }
 
   loadCategories() {
@@ -156,17 +175,21 @@ export class AddFormComponent {
       this.addForm.patchValue({ type: '' });
     }
   }
+  private formatDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}${month}${year}`;
+  }
 
   onSubmit() {
     const { date, ...formValue } = this.addForm.value;
-    console.log(this.addForm.value);
     if (date) {
       const day = Number(date.slice(0, 2));
       const month = Number(date.slice(2, 4));
       const year = Number(date.slice(4, 8));
       formValue.createdAt = new Date(Date.UTC(year, month - 1, day));
     }
-    
     this.transactionService.createTransaction(formValue);
     this.onClose();
   }

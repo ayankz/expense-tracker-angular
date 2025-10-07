@@ -1,3 +1,10 @@
 label:has(input[type="radio"]:checked) {
   border-color: #CEAB0F;
 }
+::ng-deep .mat-mdc-select-trigger {
+ 
+  border: 1px solid #e6e9ee; 
+  border-radius: 16px;
+  padding: 8px;
+  width: 250px !important;
+}

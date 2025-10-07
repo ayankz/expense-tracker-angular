@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { DebtsComponent } from '../pages/debts/components/debts/debts.component';
 import { ExpensesComponent } from '../pages/expenses/expenses.component';
 import { IncomeComponent } from '../pages/income/income.component';
 import { SavingsComponent } from '../pages/savings/savings.component';
@@ -10,6 +9,7 @@ import { RegistrationComponent } from '../pages/auth/registration/registration.c
 import { CardsComponent } from '../pages/cards/cards.component';
 import { LayoutComponent } from '../pages/layout/layout.component';
 import { StatementsComponent } from '../pages/statements/statements.component';
+import { DebtsComponent } from '../pages/debts/debts.component';
 
 export const routes: Routes = [
   {

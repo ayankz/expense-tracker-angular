@@ -1,20 +1,14 @@
-<input
-  type="radio"
-  formControlName="type"
-  [value]="card.type"
-  class="hidden peer"
-  id="card-{{ card.id }}"
-/>
-<label
-  for="card-{{ card.id }}"
-  class="flex gap-1 items-center p-2 rounded-lg basis-1/2 cursor-pointer border border-gray-300 peer-checked:border-[#CEAB0F]"
->
-  <img
-    class="w-12 h-12"
-    [src]="card.type === 'VISA' ? 'visa.svg' : 'master-card.svg'"
-    alt="card type"
-  />
-  <div class="flex-grow flex justify-start items-center">
-    **** {{ card.digits }}
-  </div>
-</label>
+<mat-select required [formControl]="control()">
+  @for (card of cards(); track card.id) {
+  <mat-option [value]="card.id">
+    <div class="flex items-center gap-2">
+      <img
+        class="w-10 h-10"
+        [src]="card.type === 'VISA' ? 'visa.svg' : 'master-card.svg'"
+        alt="card type"
+      />
+      <span>*** {{ card.digits }}</span>
+    </div></mat-option
+  >
+  }
+</mat-select>
