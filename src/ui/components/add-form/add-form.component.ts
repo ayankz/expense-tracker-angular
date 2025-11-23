@@ -30,7 +30,6 @@ import { ButtonComponent } from '../button/button.component';
 import { dateValidator } from '../../../core/validators/date.validator';
 import { Category } from '../../../core/interfaces';
 import { TransactionService } from '../../../core/services/transaction.service';
-import { BankStatementComponent } from '../bank-statement/bank-statement.component';
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { CardService } from '../../../core/services/card.service';
 import { AppCardOptionComponent } from '../app-card-option/app-card-option.component';
@@ -51,7 +50,6 @@ import { AppCardOptionComponent } from '../app-card-option/app-card-option.compo
     SelectorComponent,
     NgxMaskDirective,
     ButtonComponent,
-    BankStatementComponent,
     AddCategoryComponent,
     AppCardOptionComponent,
   ],
